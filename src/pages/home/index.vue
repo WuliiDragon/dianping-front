@@ -13,17 +13,17 @@
 
     <Tabs value="name1"   :animated="false">
       <TabPane label="固定发帖" name="name1"  >
-        <Scroll isBottom pullUpLoad :data="form.list" :isHasMore="form.page <= form.pageTotal" @emitLoad="handleFetchData" ref="scrollRef">
+        <div >
+          <Scroll  :data="form.list" @emitLoad="handleFetchData" ref="scrollRef"  height="1000px" style="padding-bottom: 100px">
             <Item :list="form.list" isHome></Item>
-        </Scroll>
+          </Scroll>
+
+        </div>
+
       </TabPane>
 
       <TabPane label="自主发帖" name="name2">
-        <Scroll isBottom pullUpLoad :data="form.list" :isHasMore="form.page <= form.pageTotal" @emitLoad="handleFetchData" ref="scrollRef">
-          <div class="hot-box">
-            <Item :list="form.list" isHome></Item>
-          </div>
-        </Scroll>
+
 
       </TabPane>
     </Tabs>
@@ -41,174 +41,6 @@ export default {
   components: { Slider, Item },
   data() {
     return {
-      nav: {
-        menus: [
-          [
-            {
-              imgUrl: require('./img/icon01.png'),
-              text: '美食'
-            },
-            {
-              imgUrl: require('./img/icon01.png'),
-              text: '电影'
-            },
-            {
-              imgUrl: require('./img/icon03.png'),
-              text: '酒店'
-            },
-            {
-              imgUrl: require('./img/icon04.png'),
-              text: '休闲娱乐'
-            },
-            {
-              imgUrl: require('./img/icon05.png'),
-              text: '外卖'
-            },
-            {
-              imgUrl: require('./img/icon06.png'),
-              text: '火锅'
-            },
-            {
-              imgUrl: require('./img/icon07.png'),
-              text: '丽人'
-            },
-            {
-              imgUrl: require('./img/icon08.png'),
-              text: '度假出行'
-            },
-            {
-              imgUrl: require('./img/icon09.png'),
-              text: '足疗按摩'
-            },
-            {
-              imgUrl: require('./img/icon10.png'),
-              text: '周边游'
-            }
-          ],
-          [
-            {
-              imgUrl: require('./img/icon11.png'),
-              text: '景点'
-            },
-            {
-              imgUrl: require('./img/icon12.png'),
-              text: 'KTV'
-            },
-            {
-              imgUrl: require('./img/icon13.png'),
-              text: '购物'
-            },
-            {
-              imgUrl: require('./img/icon14.png'),
-              text: '生活服务'
-            },
-            {
-              imgUrl: require('./img/icon15.png'),
-              text: '运动健身'
-            },
-            {
-              imgUrl: require('./img/icon16.png'),
-              text: '美发'
-            },
-            {
-              imgUrl: require('./img/icon17.png'),
-              text: '亲子'
-            },
-            {
-              imgUrl: require('./img/icon18.png'),
-              text: '小吃快餐'
-            },
-            {
-              imgUrl: require('./img/icon19.png'),
-              text: '自助餐'
-            },
-            {
-              imgUrl: require('./img/icon20.png'),
-              text: '酒吧'
-            }
-          ],
-          [
-            {
-              imgUrl: require('./img/icon21.png'),
-              text: '日本菜'
-            },
-            {
-              imgUrl: require('./img/icon22.png'),
-              text: 'SPA'
-            },
-            {
-              imgUrl: require('./img/icon23.png'),
-              text: '结婚'
-            },
-            {
-              imgUrl: require('./img/icon24.png'),
-              text: '学习培训'
-            },
-            {
-              imgUrl: require('./img/icon25.png'),
-              text: '西餐'
-            },
-            {
-              imgUrl: require('./img/icon26.png'),
-              text: '火车机票'
-            },
-            {
-              imgUrl: require('./img/icon27.png'),
-              text: '烧烤'
-            },
-            {
-              imgUrl: require('./img/icon28.png'),
-              text: '家装'
-            },
-            {
-              imgUrl: require('./img/icon29.png'),
-              text: '宠物'
-            },
-            {
-              imgUrl: require('./img/icon30.png'),
-              text: '周边游'
-            }
-          ]
-        ],
-        boons: [
-          {
-            title: '暑假5折',
-            subTitle: '芒果冰激凌',
-            color: { color: '#c6e34b' },
-            imgUrl: require('./img/boon/img01.jpg')
-          },
-          {
-            title: '特价出国',
-            subTitle: '1元游全国',
-            color: { color: '#42d6fe' },
-            imgUrl: require('./img/boon/img02.jpg')
-          },
-          {
-            title: '亮亮车',
-            subTitle: '洗车9.9元',
-            color: { color: '#fc0' },
-            imgUrl: require('./img/boon/img06.jpg')
-          },
-          {
-            title: '学钢琴',
-            subTitle: '免费学习',
-            color: { color: '#8c6266' },
-            imgUrl: require('./img/boon/img03.jpg')
-          },
-          {
-            title: '电影',
-            subTitle: '天天看大片',
-            color: { color: '#fe5e60' },
-            imgUrl: require('./img/boon/img04.jpg')
-          },
-          {
-            title: '旅游热卖',
-            subTitle: '迪士尼周边',
-            color: { color: '#217ecb' },
-            imgUrl: require('./img/boon/img05.jpg')
-          }
-        ]
-      },
       form: {
         keyword: '',
         list: [],
@@ -235,7 +67,6 @@ export default {
       if (this.isAjax || this.form.page > this.form.pageTotal) {
         return;
       }
-
       try {
         this.isAjax = true;
         let res = await this.$http({

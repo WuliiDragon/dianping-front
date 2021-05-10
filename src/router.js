@@ -23,6 +23,11 @@ const router = new Router({
       component: () => import('@/pages/search')
     },
     {
+      path: '/score/:id',
+      name: 'score',
+      component: () => import('@/pages/score')
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('@/pages/login')
@@ -32,17 +37,7 @@ const router = new Router({
       name: 'detail',
       component: () => import('@/pages/detail')
     },
-    {
-      path: '/cart',
-      name: 'cart',
-      component: () => import('@/pages/cart')
-    },
-    {
-      path: '/collect',
-      name: 'collect',
-      meta: { auth: true },
-      component: () => import('@/pages/collect')
-    },
+
     {
       path: '/payment',
       name: 'payment',

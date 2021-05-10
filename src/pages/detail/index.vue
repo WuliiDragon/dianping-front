@@ -1,17 +1,32 @@
 <template>
+
   <div class="detail-wrap">
-    <Header title="商品详情"></Header>
+
+    <Header title="商品详情">
+
+      <div style="margin-left:1px">
+        <Button  icon="md-arrow-round-back" to="/detail"></Button>
+      </div>
+
+    </Header>
+
     <template v-if="isAjax">
       <div class="loading-box">加载中...</div>
       <Loading></Loading>
+
     </template>
     <!-- 主体内容 -->
     <template v-else>
-      <Scroll :data="[goods]" isBottom>
+
+      <Scroll :data="[goods]" isBottom  height="800px">
+
         <div class="goods-box">
+
+
           <div class="img-box">
             <img class="img" :src="goods.imgUrl" :alt="goods.name" />
           </div>
+
           <div class="intr-box">
             <h2 class="name">{{goods.name}}</h2>
             <div class="other-box">
@@ -25,14 +40,23 @@
               <span class="text">{{'环境:' + goods.store.environment}}</span>
               <span class="text">{{'服务:' + goods.store.service}}</span>
             </div>
+
+
+          </div>
+          <div >
+
+            <Button icon="ios-create-outline"
+                    @click="$router.push({name: 'score', params: {id: 1}})">
+
+            </Button>
+
+            <Button icon="ios-heart"></Button>
+
           </div>
         </div>
         <!-- 店铺信息 -->
         <ul class="store-box">
-          <li class="item-box">
-            <i class="iconfont icon-gps"></i>
-            <span class="text">{{goods.store.address}}</span>
-          </li>
+
           <li class="item-box">
             <i class="iconfont icon-time" />
             <span class="text">{{'营业时间' + goods.store.businessHours}}</span>
@@ -45,19 +69,10 @@
         <!-- 商品评论 -->
         <ul class="comments-list">
           <li class="title-box" v-if="goods.comments.length">
-            <span class="title">{{'网友点评'+ goods.comments.length +'条'}}</span>
+            <span class="title">{{'师生点评'+ goods.comments.length +'条'}}</span>
 
-<!--            <span class="btn-view">-->
-<!--              <span>查看全部</span>-->
-<!--              <i class="iconfont icon-right-arrow"></i>-->
-<!--            </span>-->
           </li>
           <li class="no-comments" v-else>此商品暂无评论</li>
-<!--          <Scroll :on-reach-bottom="handleReachBottom">-->
-<!--            <Card dis-hover v-for="(item, index) in list1" :key="index" style="margin: 32px 0">-->
-<!--              Content {{ item }}-->
-<!--            </Card>-->
-<!--          </Scroll>-->
           <li class="item-box" v-for="(item, index) in goods.comments.slice(0, 3)" :key="index">
             <div class="avatar-box">
               <img class="avatar" :src="item.avatar" :alt="item.name" />
@@ -79,12 +94,7 @@
           </li>
         </ul>
       </Scroll>
-      <!-- 底部操作 -->
-      <div class="handle-bar">
-        <div class="btn btn-star" :class="{active: _isCollect}" @click="handleToggleCollect">{{_isCollect ? '取消收藏' : '加入收藏'}}</div>
-<!--        <div class="btn btn-cart" @click="handleCart(false)">加入购物车</div>-->
-        <div class="btn btn-buy" @click="handleCart(true)">我要点评</div>
-      </div>
+
     </template>
   </div>
 </template>
@@ -97,7 +107,6 @@ export default {
   components: { Star, Loading },
   data() {
     return {
-      list1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       id: 0,
       goods: {
         store: {},
@@ -115,6 +124,7 @@ export default {
     }
   },
   methods: {
+
     handleCart(isNowBuy) {
       if (isNowBuy) {
         this.$router.push({ name: 'payment' });
