@@ -46,12 +46,18 @@
         <ul class="comments-list">
           <li class="title-box" v-if="goods.comments.length">
             <span class="title">{{'网友点评'+ goods.comments.length +'条'}}</span>
-            <span class="btn-view">
-              <span>查看全部</span>
-              <i class="iconfont icon-right-arrow"></i>
-            </span>
+
+<!--            <span class="btn-view">-->
+<!--              <span>查看全部</span>-->
+<!--              <i class="iconfont icon-right-arrow"></i>-->
+<!--            </span>-->
           </li>
           <li class="no-comments" v-else>此商品暂无评论</li>
+<!--          <Scroll :on-reach-bottom="handleReachBottom">-->
+<!--            <Card dis-hover v-for="(item, index) in list1" :key="index" style="margin: 32px 0">-->
+<!--              Content {{ item }}-->
+<!--            </Card>-->
+<!--          </Scroll>-->
           <li class="item-box" v-for="(item, index) in goods.comments.slice(0, 3)" :key="index">
             <div class="avatar-box">
               <img class="avatar" :src="item.avatar" :alt="item.name" />
@@ -76,8 +82,8 @@
       <!-- 底部操作 -->
       <div class="handle-bar">
         <div class="btn btn-star" :class="{active: _isCollect}" @click="handleToggleCollect">{{_isCollect ? '取消收藏' : '加入收藏'}}</div>
-        <div class="btn btn-cart" @click="handleCart(false)">加入购物车</div>
-        <div class="btn btn-buy" @click="handleCart(true)">立即购买</div>
+<!--        <div class="btn btn-cart" @click="handleCart(false)">加入购物车</div>-->
+        <div class="btn btn-buy" @click="handleCart(true)">我要点评</div>
       </div>
     </template>
   </div>
@@ -91,6 +97,7 @@ export default {
   components: { Star, Loading },
   data() {
     return {
+      list1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       id: 0,
       goods: {
         store: {},

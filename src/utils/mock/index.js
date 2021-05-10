@@ -6,13 +6,10 @@ Mock.mock(new RegExp(api.list), 'get', {
   code: 200,
   msg: '',
   data: [
-    {
-      id: 1,
-      name: '扁豆焖面(实惠)',
-      distance: '150m',
-      desc: '好吃的扁豆焖面',
+    { id: 1,
+      name: 'C区三层自助餐',
+      desc: '专注自助餐50年',
       price: '12',
-      oldPrice: '18',
       sales: '@integer(50, 200)',
       star: 5,
       cartNum: 0,

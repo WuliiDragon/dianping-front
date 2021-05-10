@@ -1,10 +1,13 @@
 <template>
   <ul class="item-wrap" :class="{padding: isHome}">
+
     <template v-if="!isCart">
+
       <li class="item-box" v-for="(item, index) in list" :key="index" @click="$router.push({name: 'detail', params: {id: item.id}})">
         <div class="img-box">
           <img class="img" :src="item.imgUrl" :alt="item.name" />
         </div>
+
         <div class="intr-box" v-if="isHome">
           <div class="top-box">
             <h3 class="name">{{item.name}}</h3>
@@ -16,26 +19,29 @@
               <span class="price">{{'￥' + item.price}}</span>
               <span class="old-price" v-if="item.oldPrice">{{'￥' + item.oldPrice}}</span>
             </div>
-            <div class="sales">{{'已售' + item.sales}}</div>
+            <div class="sales">{{'日售' + item.sales}}</div>
           </div>
         </div>
-        <div class="intr-box2" v-else>
-          <div class="btn-del" v-if="isShowDel" @click="handleDel(item, $event)">删除</div>
-          <h2 class="goods-name">{{item.name}}</h2>
-          <div class="other-box">
-            <Star :score="item.star"></Star>
-            <span class="text">{{'￥' + item.price + '/份'}}</span>
-          </div>
-          <div class="store-name">{{item.store.name}}</div>
-          <ul class="promotion-list">
-            <li class="_item-box" v-for="(_item, _index) in item.promotion" :key="_index">
-              <i class="iconfont icon-boon" v-if="_item.type === 1"></i>
-              <span class="text">{{_item.text}}</span>
-            </li>
-          </ul>
-        </div>
+
+<!--        <div class="intr-box2" v-else>-->
+<!--          <div class="btn-del" v-if="isShowDel" @click="handleDel(item, $event)">删除</div>-->
+<!--          <h2 class="goods-name">{{item.name}}</h2>-->
+<!--          <div class="other-box">-->
+<!--            <Star :score="item.star"></Star>-->
+<!--            <span class="text">{{'￥' + item.price + '/份'}}</span>-->
+<!--          </div>-->
+<!--          <div class="store-name">{{item.store.name}}</div>-->
+<!--          <ul class="promotion-list">-->
+<!--            <li class="_item-box" v-for="(_item, _index) in item.promotion" :key="_index">-->
+<!--              <i class="iconfont icon-boon" v-if="_item.type === 1"></i>-->
+<!--              <span class="text">{{_item.text}}</span>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </div>-->
       </li>
     </template>
+
+
     <li class="item-box2" v-for="(item, index) in list" :key="index" @click="$router.push({name: 'detail', params: {id: item.id}})" v-else>
       <div class="check-box">
         <div class="btn-check" :class="{on: item.checked}" @click="handleToggleChecked(item, $event)"></div>

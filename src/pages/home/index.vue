@@ -1,51 +1,34 @@
 <template>
   <div class="home-wrap">
     <div class="header-bar">
-      <span class="text-box" @click="$router.push({name: 'address'})">
-        <span>{{nowAddress}}</span>
-        <i class="iconfont icon-down-arrow"></i>
-      </span>
       <div class="search-box">
         <i class="iconfont icon-search"></i>
         <input class="search" type="text" v-model="form.keyword" placeholder="请输入关键字" @keyup="handleSearch($event)" />
       </div>
+
       <span class="btn-search" @click="$router.push({name: isLogin ? 'collect' : 'login'})">
         <i :class="['iconfont', isLogin ? 'icon-star' : 'icon-login']"></i>
       </span>
     </div>
-    <Scroll isBottom pullUpLoad :data="form.list" :isHasMore="form.page <= form.pageTotal" @emitLoad="handleFetchData" ref="scrollRef">
-      <!-- 轮播图 -->
-      <Slider>
-        <div class="slider-box" v-for="(item, index) in nav.menus" :key="index">
-          <div class="item-list">
-            <div class="item-box" v-for="(_item, _index) in item" :key="_index">
-              <div class="img-box">
-                <img class="img" :src="_item.imgUrl" :alt="_item.text" />
-              </div>
-              <div class="text">{{_item.text}}</div>
-            </div>
+
+    <Tabs value="name1"   :animated="false">
+      <TabPane label="固定发帖" name="name1"  >
+        <Scroll isBottom pullUpLoad :data="form.list" :isHasMore="form.page <= form.pageTotal" @emitLoad="handleFetchData" ref="scrollRef">
+            <Item :list="form.list" isHome></Item>
+        </Scroll>
+      </TabPane>
+
+      <TabPane label="自主发帖" name="name2">
+        <Scroll isBottom pullUpLoad :data="form.list" :isHasMore="form.page <= form.pageTotal" @emitLoad="handleFetchData" ref="scrollRef">
+          <div class="hot-box">
+            <Item :list="form.list" isHome></Item>
           </div>
-        </div>
-      </Slider>
-      <!-- 超值特惠 -->
-      <div class="boon-box">
-        <h2 class="title">超值特惠</h2>
-        <div class="list-box">
-          <div class="item-box" v-for="(item, index) in nav.boons" :key="index">
-            <div class="caption" :style="item.color">{{item.title}}</div>
-            <div class="sub-caption">{{item.subTitle}}</div>
-            <div class="img-box">
-              <img class="img" :src="item.imgUrl" :alt="item.title" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 热门商品 -->
-      <div class="hot-box">
-        <h2 class="title">热门商品</h2>
-        <Item :list="form.list" isHome></Item>
-      </div>
-    </Scroll>
+        </Scroll>
+
+      </TabPane>
+    </Tabs>
+
+
   </div>
 </template>
 
@@ -289,8 +272,8 @@ export default {
     }
   }
 };
-</script>
 
+</script>
 <style lang="scss" scoped>
 .home-wrap {
   height: 100vh;

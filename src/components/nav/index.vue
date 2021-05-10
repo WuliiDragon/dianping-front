@@ -3,7 +3,12 @@
     <router-link class="nav-box" activeClass="active" :to="item.url" @click.native="handleLink(item)" v-for="(item, index) in nav" :key="index">
       <div class="item-box">
         <i class="num" v-if="item.url === '/cart' && _num > 0">{{_num}}</i>
-        <i :class="['iconfont', item.icon]"></i>
+
+<!--        <i :class="['iconfont', item.icon]"></i>-->
+<!--        <icon> </icon>-->
+<!--        <Icon type="md-beer" />-->
+<!--        <Icon type="{item.icon}" />-->
+<!--        <i :class="['iconfont', item.icon]"></i>-->
         <span class="text">{{item.text}}</span>
       </div>
     </router-link>
@@ -16,8 +21,9 @@ export default {
   data() {
     return {
       nav: [
-        { url: '/home', text: '首页', icon: 'icon-home' },
-        { url: '/cart', text: '购物车', icon: 'icon-cart' },
+
+        { url: '/home', text: '食堂', icon: 'md-beer' },
+        { url: '/home', text: '课程', icon: 'icon-home' },
         { url: '/mine', text: '我的', icon: 'icon-mine' }
       ]
     };

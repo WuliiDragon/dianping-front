@@ -8,6 +8,9 @@ import api from './utils/api';
 import sesstion from './utils/storage';
 import { Header, Scroll, Toast, Confirm } from './components';
 import './common/scss/index.scss';
+import ViewUI from 'view-design';
+import 'view-design/dist/styles/iview.css';
+
 
 // 导入mock数据，npm run build前，请手动注释，否则将使用mock数据
 import './utils/mock';
@@ -15,6 +18,7 @@ import './utils/mock';
 Vue.config.productionTip = false;
 Vue.use(Header);
 Vue.use(Scroll);
+Vue.use(ViewUI);
 Vue.use(Toast);
 Vue.use(Confirm);
 // axios响应拦截器
