@@ -4,9 +4,11 @@
 
     <Header title="商品详情">
 
-      <div style="margin-left:1px">
-        <Button  icon="md-arrow-round-back" to="/detail"></Button>
-      </div>
+      <Button :size="buttonSize"  :ghost="true" to="/detail">
+        <Icon type="ios-arrow-back" />
+        返回
+      </Button>
+
 
     </Header>
 
@@ -70,7 +72,6 @@
         <ul class="comments-list">
           <li class="title-box" v-if="goods.comments.length">
             <span class="title">{{'师生点评'+ goods.comments.length +'条'}}</span>
-
           </li>
           <li class="no-comments" v-else>此商品暂无评论</li>
           <li class="item-box" v-for="(item, index) in goods.comments.slice(0, 3)" :key="index">

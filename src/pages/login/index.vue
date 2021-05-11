@@ -1,7 +1,19 @@
 <template>
   <div class="login-wrap" @click="handleBlur">
-    <Header title="登录"></Header>
-    <Scroll :data="['shaw']" v-if="!isAjax">
+    <Header title="登录">
+
+      <div style="margin-left:1px">
+
+        <Button :size="buttonSize"  :ghost="true" to="/home" replace>
+          <Icon type="ios-arrow-back" />
+          返回
+        </Button>
+<!--        <Button  type="text" to="/detail"> <- </Button>-->
+      </div>
+
+
+    </Header>
+    <Scroll :data="['shaw']" v-if="!isAjax" height="800px">
       <div class="form-box" :class="{shake: isError}">
         <div class="avatar-box">
           <img class="avatar" :src="user.avatar" alt="头像" />

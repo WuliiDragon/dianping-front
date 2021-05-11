@@ -14,7 +14,7 @@
     <Tabs value="name1"   :animated="false">
       <TabPane label="固定发帖" name="name1"  >
         <div >
-          <Scroll  :data="form.list" @emitLoad="handleFetchData" ref="scrollRef"  height="1000px" style="padding-bottom: 100px">
+          <Scroll  :data="form.list"   height="1000px" style="padding-bottom: 100px">
             <Item :list="form.list" isHome></Item>
           </Scroll>
 
@@ -44,11 +44,9 @@ export default {
       form: {
         keyword: '',
         list: [],
-        page: 1,
-        pageTotal: 1
       },
-      isAjax: false,
-      isFirst: true
+      isFirst:true,
+
     };
   },
   computed: mapState(['nowAddress', 'isLogin']),
@@ -73,6 +71,7 @@ export default {
           url: `${this.$api.list}?page=${this.form.page}`
         });
         this.isAjax = false;
+        console.log(res)
 
         if (res.code === 200) {
           this.form.list = [...this.form.list, ...res.data];
