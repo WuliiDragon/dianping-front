@@ -4,8 +4,7 @@
     <Header title="商品详情">
 
       <div style="margin-left:1px">
-        <Button  icon="md-arrow-round-back" @click="
-        $router.push({name: 'detail' ,params:{window_no: 23}})"></Button>
+        <Button  icon="md-arrow-round-back" @click="back"></Button>
       </div>
 
     </Header>
@@ -103,21 +102,22 @@ export default {
     };
   },
   methods: {
+    back(){
+      console.log(this.post_id)
+      this.$router.push({name: 'detail' ,params:{window_no: this.post_id}})
+    },
     insert() {
 
       if (!this.$store.state.isLogin){
           alert('您还未登录')
           return
       }
-
-
-
       try {
         var self = this
 
         this.$http.post('http://localhost:5000/api/insertComment',{
           'user_id':1,
-          'post_id':23,
+          'post_id':self.post_id,
           'content':self.context,
           'score_taste':self.score.score_taste,
           'score_health':self.score.score_health,
@@ -125,7 +125,7 @@ export default {
           'score_service':self.score.score_service,
           'score_fullness':self.score.score_fullness,
         }).then((response) => {
-          self.$router.push({name: 'detail' ,params:{window_no: 23}})
+          self.$router.push({name: 'detail' ,params:{window_no: self.post_id}})
 
         });
       } catch (e) {
@@ -141,11 +141,6 @@ export default {
 
         this.post_id = +val.params.post_id;
         this.user_id = +val.params.user_id;
-        console.log('======')
-        console.log(this.post_id)
-        console.log(this.user_id)
-        // console.log(this.window_no)
-        // this.handleFetchData();
       },
       immediate: true,
       deep: true

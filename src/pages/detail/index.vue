@@ -48,7 +48,7 @@
           </div>
           <div >
             <Button icon="ios-create-outline"
-                    @click="$router.push({name: 'score', params: {post_id: 23,user_id:1}})">
+                    @click="to_score">
             </Button>
             <Button icon="ios-heart"></Button>
           </div>
@@ -129,11 +129,17 @@ export default {
   methods: {
 
 
+    to_score(){
+      this.$router.push({name: 'score', params: {post_id: this.window_no,user_id:1}})
+
+    },
+
 
     async handleFetchData() {
 
       try {
         this.$http.get('http://localhost:5000/api/getWindowInfo?window_no='+this.window_no).then((response) => {
+          // this.data =response
           this.data =response
 
           this.data.window_pic = 'http://localhost:5000/img' + this.data.window_pic
