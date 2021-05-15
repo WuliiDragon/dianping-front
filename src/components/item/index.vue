@@ -15,7 +15,7 @@
           </div>
 
           <div class="top-box">
-            <h3 class="name">档口：{{item.window_district}}</h3>
+            <h3 class="name">{{item.window_district}}区</h3>
             <div class="distance">{{item.window_floor}} 层</div>
           </div>
 

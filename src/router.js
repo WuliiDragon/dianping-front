@@ -23,7 +23,7 @@ const router = new Router({
       component: () => import('@/pages/search')
     },
     {
-      path: '/score/:id',
+      path: '/score/:user_id:post_id',
       name: 'score',
       component: () => import('@/pages/score')
     },
@@ -33,7 +33,7 @@ const router = new Router({
       component: () => import('@/pages/login')
     },
     {
-      path: '/detail/:id',
+      path: '/detail/:window_no',
       name: 'detail',
       component: () => import('@/pages/detail')
     },

@@ -19,78 +19,83 @@
     </template>
     <!-- 主体内容 -->
     <template v-else>
-
-      <Scroll :data="[goods]" isBottom  height="800px">
+      <Scroll :data="[data]" isBottom  height="800px">
 
         <div class="goods-box">
-
-
           <div class="img-box">
-            <img class="img" :src="goods.imgUrl" :alt="goods.name" />
+            <img class="img" :src="data.window_pic" />
           </div>
 
+
           <div class="intr-box">
-            <h2 class="name">{{goods.name}}</h2>
-            <div class="other-box">
-              <Star :score="goods.star"></Star>
-              <span class="text">{{goods.comments.length + '条'}}</span>
-              <span class="text">{{'￥'+ goods.price + '/份'}}</span>
-            </div>
+
+
+            <h2 class="name">{{data.window_name}}</h2>
+            <span class="text">{{data.canteen_district+'区'}}</span>
+            <span class="text">{{data.canteen_floor+'层'}}</span>
+
+
             <div class="store-name">{{goods.store.name}}</div>
             <div class="score-box">
-              <span class="text">{{'口味:' + goods.store.taste}}</span>
-              <span class="text">{{'环境:' + goods.store.environment}}</span>
-              <span class="text">{{'服务:' + goods.store.service}}</span>
+              <span class="text">{{'味道:'  +data.window_total_score.taste}}</span>
+              <span class="text">{{'满意度:'+data.window_total_score.fullness}}</span>
+              <span class="text">{{'环境:'  +data.window_total_score.money}}</span>
+              <span class="text">{{'卫生:'  +data.window_total_score.health}}</span>
+              <span class="text">{{'服务:'  +data.window_total_score.service}}</span>
             </div>
 
 
           </div>
           <div >
-
             <Button icon="ios-create-outline"
-                    @click="$router.push({name: 'score', params: {id: 1}})">
-
+                    @click="$router.push({name: 'score', params: {post_id: 23,user_id:1}})">
             </Button>
-
             <Button icon="ios-heart"></Button>
-
           </div>
         </div>
-        <!-- 店铺信息 -->
-        <ul class="store-box">
 
-          <li class="item-box">
-            <i class="iconfont icon-time" />
-            <span class="text">{{'营业时间' + goods.store.businessHours}}</span>
-          </li>
-          <li class="item-box">
-            <i class="iconfont icon-tel" />
-            <span class="text">{{goods.store.tel}}</span>
-          </li>
-        </ul>
+
+
         <!-- 商品评论 -->
         <ul class="comments-list">
-          <li class="title-box" v-if="goods.comments.length">
-            <span class="title">{{'师生点评'+ goods.comments.length +'条'}}</span>
+          <li class="title-box" v-if="data.window_comment.length">
+            <span class="title">{{'师生点评 '+ data.window_comment.length +'条'}}</span>
           </li>
-          <li class="no-comments" v-else>此商品暂无评论</li>
-          <li class="item-box" v-for="(item, index) in goods.comments.slice(0, 3)" :key="index">
+          <li class="no-comments" v-else>此档口暂无评论</li>
+
+          <li class="item-box" v-for="(item, index) in data.window_comment" :key="index">
             <div class="avatar-box">
               <img class="avatar" :src="item.avatar" :alt="item.name" />
             </div>
             <div class="content-box">
-              <div class="username">{{item.name}}</div>
-              <div class="star-box">
-                <Star :score="item.star"></Star>
+              <div class="username">{{item.comment_username}}</div>
+              <div class="score-box">
+<!--                <Rate allow-half v-model="item.score_taste" count="10" >-->
+<!--                  <span class="text">综合</span>-->
+
+<!--                </Rate>-->
+
+
+<!--                <span class="text">味道</span>-->
+<!--                <Rate allow-half v-model="item.score_taste" count="10" />-->
+
+
+                <span class="text">{{'味道:'  +item.score_taste}} </span>
+                <span class="text">{{'满意度:'+item.score_fullness}} </span>
+                <span class="text">{{'环境:'  +item.score_money}} </span>
+                <span class="text">{{'卫生:'  +item.score_service}} </span>
+                <span class="text">{{'服务:'  +item.score_service}} </span>
               </div>
-              <p class="text">{{item.text}}</p>
-              <div class="pic-bar" v-if="item.pics.length">
-                <ul class="pic-list">
-                  <li class="pic-box" v-for="(_item, _index) in item.pics" :key="_index">
-                    <img class="pic" :src="_item" alt />
-                  </li>
-                </ul>
-              </div>
+
+
+              <p class="text">{{item.comment_content}}</p>
+<!--              <div class="pic-bar" v-if="item.pics.length">-->
+<!--                <ul class="pic-list">-->
+<!--                  <li class="pic-box" v-for="(_item, _index) in item.pics" :key="_index">-->
+<!--                    <img class="pic" :src="_item" alt />-->
+<!--                  </li>-->
+<!--                </ul>-->
+<!--              </div>-->
             </div>
           </li>
         </ul>
@@ -113,25 +118,28 @@ export default {
         store: {},
         comments: []
       },
-      isAjax: false
+      data:{
+        window_comment:[]
+      },
     };
   },
   computed: {
-    _isCollect() {
-      if (this.$store.state.isLogin === 0) {
-        return false;
-      }
-      return !!this.$store.state.collectList.find(item => item.id === this.id);
-    }
+
   },
   methods: {
+
 
 
     async handleFetchData() {
 
       try {
-        this.$http.get('http://localhost:5000/api/getWindowInfo?window_no').then((response) => {
-          // this.form.list = [...this.form.list, ...response.windows_list];
+        this.$http.get('http://localhost:5000/api/getWindowInfo?window_no='+this.window_no).then((response) => {
+          this.data =response
+
+          this.data.window_pic = 'http://localhost:5000/img' + this.data.window_pic
+          console.log(this.window_no)
+
+
           // for (let i in this.form.list) {
           //   let win =  this.form.list[i]
           //   win.window_pic= 'http://localhost:5000/img/'+win.window_pic
@@ -152,6 +160,7 @@ export default {
         Object.assign(this.$data, this.$options.data());
         // +的作用是隐式转化
         this.window_no = +val.params.window_no;
+        console.log(this.window_no)
         this.handleFetchData();
       },
       immediate: true,
