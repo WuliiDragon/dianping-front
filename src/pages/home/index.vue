@@ -62,27 +62,21 @@ export default {
   },
   methods: {
     async handleFetchData() {
-      if (this.isAjax || this.form.page > this.form.pageTotal) {
-        return;
-      }
-      try {
-        this.isAjax = true;
-        let res = await this.$http({
-          url: `${this.$api.list}?page=${this.form.page}`
-        });
-        this.isAjax = false;
-        console.log(res)
 
-        if (res.code === 200) {
-          this.form.list = [...this.form.list, ...res.data];
-          this.form.page++;
-          this.form.pageTotal = 5;
-        } else {
-          this.$toast({ msg: res.msg });
-        }
+      try {
+        this.$http.get('http://localhost:5000/api/getwindowslist').then((response) => {
+          this.form.list = [...this.form.list, ...response.windows_list];
+          for (let i in this.form.list) {
+            let win =  this.form.list[i]
+            win.window_pic= 'http://localhost:5000/img/'+win.window_pic
+            console.log(win)
+            // win['window_pic'] = 'http://localhost:5000'+window_pic['window_pic']
+
+          }
+
+
+        });
       } catch (e) {
-        this.isAjax = false;
-        this.$toast({ msg: this.$api.msg });
       }
     },
     handleSearch(e) {

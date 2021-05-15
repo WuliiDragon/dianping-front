@@ -126,54 +126,23 @@ export default {
   },
   methods: {
 
-    handleCart(isNowBuy) {
-      if (isNowBuy) {
-        this.$router.push({ name: 'payment' });
-      } else {
-        this.$store.commit('$handleCart', { goods: this.goods });
-        this.$store.commit('$handleToggleChecked', { checked: 1 });
-        this.$toast({ msg: '加入购物车成功', duration: 5e2 });
-      }
-    },
-    handleToggleCollect() {
-      if (this.$store.state.isLogin === 0) {
-        return this.$router.replace({
-          name: 'login',
-          query: { redirect: this.$route.path }
-        });
-      }
-      this.$store.commit('$handleCollect', this.goods);
-    },
+
     async handleFetchData() {
-      if (this.isAjax) {
-        return;
-      }
 
       try {
-        this.isAjax = true;
-        let res = await this.$http({ url: `${this.$api.list}?id=${this.id}` });
-        this.isAjax = false;
+        this.$http.get('http://localhost:5000/api/getWindowInfo?window_no').then((response) => {
+          // this.form.list = [...this.form.list, ...response.windows_list];
+          // for (let i in this.form.list) {
+          //   let win =  this.form.list[i]
+          //   win.window_pic= 'http://localhost:5000/img/'+win.window_pic
+          //   console.log(win)
+          //   // win['window_pic'] = 'http://localhost:5000'+window_pic['window_pic']
+          //
+          // }
 
-        if (res.code === 200) {
-          this.goods = res.data.find(item => item.id === this.id);
 
-          // 延迟以确保dom渲染完毕
-          setTimeout(() => {
-            let list = document.querySelectorAll('.pic-bar');
-            list.forEach(
-              item =>
-                new this.$BScroll(item, {
-                  scrollX: true,
-                  scrollY: false
-                })
-            );
-          }, 60);
-        } else {
-          this.$toast({ msg: res.msg });
-        }
+        });
       } catch (e) {
-        this.isAjax = false;
-        this.$toast({ msg: this.$api.msg });
       }
     }
   },
@@ -182,7 +151,7 @@ export default {
       handler(val) {
         Object.assign(this.$data, this.$options.data());
         // +的作用是隐式转化
-        this.id = +val.params.id;
+        this.window_no = +val.params.window_no;
         this.handleFetchData();
       },
       immediate: true,

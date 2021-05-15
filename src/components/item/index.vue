@@ -3,23 +3,31 @@
 
     <template v-if="!isCart">
 
-      <li class="item-box" v-for="(item, index) in list" :key="index" @click="$router.push({name: 'detail', params: {id: item.id}})">
+      <li class="item-box" v-for="(item, index) in list" :key="index" @click="$router.push({name: 'detail', params: {window_no: item.window_no}})">
         <div class="img-box">
-          <img class="img" :src="item.imgUrl" :alt="item.name" />
+          <img class="img" :src="item.window_pic" :alt="item.name" />
         </div>
 
-        <div class="intr-box" v-if="isHome">
+        <div class="intr-box">
           <div class="top-box">
-            <h3 class="name">{{item.name}}</h3>
+            <h3 class="name">{{item.window_name}}</h3>
             <div class="distance">{{item.distance}}</div>
           </div>
+
+          <div class="top-box">
+            <h3 class="name">档口：{{item.window_district}}</h3>
+            <div class="distance">{{item.window_floor}} 层</div>
+          </div>
+
+
           <div class="desc">{{item.desc}}</div>
           <div class="bottom-box">
             <div class="price-box">
-              <span class="price">{{'￥' + item.price}}</span>
-              <span class="old-price" v-if="item.oldPrice">{{'￥' + item.oldPrice}}</span>
+              <Rate
+                :count="10"
+                disabled
+                v-model="item.window_score" />
             </div>
-            <div class="sales">{{'日售' + item.sales}}</div>
           </div>
         </div>
 

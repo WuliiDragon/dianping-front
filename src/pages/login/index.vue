@@ -8,9 +8,8 @@
           <Icon type="ios-arrow-back" />
           返回
         </Button>
-<!--        <Button  type="text" to="/detail"> <- </Button>-->
+        <!--        <Button  type="text" to="/detail"> <- </Button>-->
       </div>
-
 
     </Header>
     <Scroll :data="['shaw']" v-if="!isAjax" height="800px">
@@ -68,7 +67,7 @@ export default {
       // 解决苹果手机表单页面无法复原问题
       window.scroll(0, 0);
     },
-    handleLogin() {
+    async handleLogin() {
       if (!this.form.username || !this.form.password) {
         this.isError = true;
         return this.$toast({
@@ -76,31 +75,19 @@ export default {
           callback: () => (this.isError = false)
         });
       }
-      this.$store.commit('$handleLogin', { isLogin: 1, userInfo: this.user });
-      this.$router.replace({ path: '/' });
-    },
-    async handleFetchData() {
-      try {
-        if (this.isAjax) {
-          return;
-        }
-
-        this.isAjax = true;
-        let res = await this.$http({ url: this.$api.user });
-        this.isAjax = false;
-
-        if (res.code === 200) {
-          res = res.data;
-          this.user = { avatar: res.avatar, name: res.username };
-          this.form = { username: res.username, password: res.password };
-        } else {
-          this.$toast({ msg: res.msg });
-        }
-      } catch (e) {
-        this.isAjax = false;
-        this.$toast({ msg: this.$api.msg });
+      const { msg: res } = await this.$http.post('http://localhost:5000/api/login', {
+        username: this.form.username,
+        password: this.form.password
+      });
+      // eslint-disable-next-line eqeqeq
+      if (res == '登陆成功') {
+        this.user.name=this.form.username;
+        this.$store.commit('$handleLogin', { isLogin: 1, userInfo: this.user });
+        this.$router.replace({ path: '/' });
+      } else {
+        alert('密码错误');
       }
-    }
+    },
   }
 };
 </script>
