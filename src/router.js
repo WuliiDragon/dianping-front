@@ -33,11 +33,15 @@ const router = new Router({
       component: () => import('@/pages/login')
     },
     {
+      path: '/regist',
+      name: 'regist',
+      component: () => import('@/pages/regist')
+    },
+    {
       path: '/detail/:window_no',
       name: 'detail',
       component: () => import('@/pages/detail')
     },
-
     {
       path: '/payment',
       name: 'payment',

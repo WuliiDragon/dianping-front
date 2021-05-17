@@ -7,6 +7,11 @@
           <img class="avatar" :src="_user.avatar" alt="头像" />
         </div>
         <div class="name">{{_user.name}}</div>
+        <Upload action="http://127.0.0.1:5000/api/up_photo"
+                :on-success="handleSuccess"
+        name='profile_photo'>
+          <Button icon="ios-cloud-upload-outline">Upload files</Button>
+        </Upload>
         <div class="btn-logout" @click="handleLogout">退出</div>
       </div>
     </scroll>
@@ -18,6 +23,7 @@ export default {
   name: 'Mine',
   computed: {
     _user() {
+      console.log(this.$store.state.userInfo);
       return this.$store.state.userInfo;
     }
   },
@@ -30,6 +36,13 @@ export default {
           this.$router.push({ name: 'home' });
         }
       });
+    },
+    handleSuccess(res, file) {
+      console.log(res);
+      const { Path: mpath } = res;
+      console.log(mpath);
+      this._user.avatar = mpath;
+      this.$store.commit('$handleLogin', { isLogin: 1, userInfo: this._user });
     }
   }
 };
