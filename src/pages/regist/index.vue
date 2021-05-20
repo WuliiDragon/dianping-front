@@ -1,3 +1,4 @@
+
 <template>
   <div class="login-wrap" @click="handleBlur">
     <Header title="登录">
@@ -26,8 +27,11 @@
           <i class="iconfont icon-password"></i>
           <input class="input" type="password" v-model.trim="form.password" placeholder="请输入密码" @click.stop @keyup.enter="handleLogin" />
         </div>
-        <div class="btn-login" @click="handleLogin">登录</div>
-        <div class="btn-login" @click="handleRegist">注册</div>
+        <div class="input-box">
+          <i class="iconfont icon-password"></i>
+          <input class="input" type="password" v-model.trim="form.repassword" placeholder="请重复输入密码" @click.stop @keyup.enter="handleLogin" />
+        </div>
+        <div class="btn-login" @click="handleRegist">确认注册</div>
       </div>
     </Scroll>
     <template v-else>
@@ -47,13 +51,13 @@ export default {
     return {
       form: {
         username: '',
-        password: ''
+        password: '',
+        repassword: ''
       },
       user: {
         avatar:
           'http://static.galileo.xiaojukeji.com/static/tms/default_header.png',
-        name: '游客',
-        id: ''
+        name: '游客'
       },
       isAjax: false,
       isError: false
@@ -69,29 +73,33 @@ export default {
       // 解决苹果手机表单页面无法复原问题
       window.scroll(0, 0);
     },
-    handleRegist(){
-      this.$router.push('regist');
-    },
-    async handleLogin() {
-      if (!this.form.username || !this.form.password) {
+    async handleRegist() {
+      if (!this.form.username || !this.form.password || !this.form.repassword) {
         this.isError = true;
         return this.$toast({
           msg: '用户名或密码不能为空',
           callback: () => (this.isError = false)
         });
       }
-      const { msg: res, userid: id } = await this.$http.post('http://localhost:5000/api/login', {
-        username: this.form.username,
-        password: this.form.password
+      // eslint-disable-next-line eqeqeq
+      if (this.form.password != this.form.repassword) {
+        this.isError = true;
+        return this.$toast({
+          msg: '两次密码不相同',
+          callback: () => (this.isError = false)
+        });
+      }
+      console.log(this.form);
+      const { msg: res } = await this.$http.post('http://localhost:5000/api/regist', {
+        'username': this.form.username,
+        'password1': this.form.password,
+        'password2': this.form.repassword
       });
       // eslint-disable-next-line eqeqeq
-      if (res == '登陆成功') {
-        this.user.name = this.form.username;
-        this.user.id = id;
-        this.$store.commit('$handleLogin', { isLogin: 1, userInfo: this.user });
-        this.$router.replace({ path: '/' });
+      if (res == '注册成功') {
+        this.$router.replace({ path: '/login' });
       } else {
-        alert('密码错误');
+        alert('注册失败');
       }
     },
   }
