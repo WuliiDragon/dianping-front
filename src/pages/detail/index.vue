@@ -1,15 +1,11 @@
 <template>
 
   <div class="detail-wrap">
-
     <Header title="商品详情">
-
       <Button :size="buttonSize"  :ghost="true" to="/detail">
         <Icon type="ios-arrow-back" />
         返回
       </Button>
-
-
     </Header>
 
     <template v-if="isAjax">
@@ -17,31 +13,26 @@
       <Loading></Loading>
 
     </template>
-    <!-- 主体内容 -->
+
     <template v-else>
       <Scroll :data="[data]" isBottom  height="800px">
-
         <div class="goods-box">
           <div class="img-box">
-            <img class="img" :src="data.window_pic" />
+            <img class="img" :src="data.canteen_pic" />
           </div>
 
 
+
           <div class="intr-box">
-
-
-            <h2 class="name">{{data.window_name}}</h2>
+            <h2 class="name">{{data.canteen_name}}</h2>
             <span class="text">{{data.canteen_district+'区'}}</span>
             <span class="text">{{data.canteen_floor+'层'}}</span>
-
-
-            <div class="store-name">{{goods.store.name}}</div>
             <div class="score-box">
-              <span class="text">{{'味道:'  +data.window_total_score.taste}}</span>
-              <span class="text">{{'满意度:'+data.window_total_score.fullness}}</span>
-              <span class="text">{{'环境:'  +data.window_total_score.money}}</span>
-              <span class="text">{{'卫生:'  +data.window_total_score.health}}</span>
-              <span class="text">{{'服务:'  +data.window_total_score.service}}</span>
+              <span class="text">{{'味道: '  +data.canteen_score.taste_score_average}}</span>
+              <span class="text">{{'满意度: '+data.canteen_score.fullness_score_average}}</span>
+              <span class="text">{{'价格: '  +data.canteen_score.money_score_average}}</span>
+              <span class="text">{{'卫生: '  +data.canteen_score.health_score_average}}</span>
+              <span class="text">{{'服务: '  +data.canteen_score.service_score_average}}</span>
             </div>
 
 
@@ -58,12 +49,12 @@
 
         <!-- 商品评论 -->
         <ul class="comments-list">
-          <li class="title-box" v-if="data.window_comment.length">
-            <span class="title">{{'师生点评 '+ data.window_comment.length +'条'}}</span>
+          <li class="title-box" v-if="data.canteen_comment.length">
+            <span class="title">{{'师生点评 '+ data.canteen_comment.length +'条'}}</span>
           </li>
           <li class="no-comments" v-else>此档口暂无评论</li>
 
-          <li class="item-box" v-for="(item, index) in data.window_comment" :key="index">
+          <li class="item-box" v-for="(item, index) in data.canteen_comment" :key="index">
             <div class="avatar-box">
               <img class="avatar" :src="item.avatar" :alt="item.name" />
             </div>
@@ -80,11 +71,11 @@
 <!--                <Rate allow-half v-model="item.score_taste" count="10" />-->
 
 
-                <span class="text">{{'味道:'  +item.score_taste}} </span>
-                <span class="text">{{'满意度:'+item.score_fullness}} </span>
-                <span class="text">{{'环境:'  +item.score_money}} </span>
-                <span class="text">{{'卫生:'  +item.score_service}} </span>
-                <span class="text">{{'服务:'  +item.score_service}} </span>
+<!--                <span class="text">{{'味道:'  +item.score_taste}} </span>-->
+<!--                <span class="text">{{'满意度:'+item.score_fullness}} </span>-->
+<!--                <span class="text">{{'环境:'  +item.score_money}} </span>-->
+<!--                <span class="text">{{'卫生:'  +item.score_service}} </span>-->
+<!--                <span class="text">{{'服务:'  +item.score_service}} </span>-->
               </div>
 
 
@@ -138,23 +129,12 @@ export default {
     async handleFetchData() {
 
       try {
-        this.$http.get('http://localhost:5000/api/getWindowInfo?window_no='+this.window_no).then((response) => {
-          // this.data =response
+        this.$http.get('http://127.0.0.1:5000/canteen/'+this.canteen_id).then((response) => {
+
+          console.log(response)
           this.data =response
-
-          this.data.window_pic = 'http://localhost:5000/img' + this.data.window_pic
+          this.data.canteen_pic = 'http://127.0.0.1:5000/img' + this.data.canteen_pic
           console.log(this.window_no)
-
-
-          // for (let i in this.form.list) {
-          //   let win =  this.form.list[i]
-          //   win.window_pic= 'http://localhost:5000/img/'+win.window_pic
-          //   console.log(win)
-          //   // win['window_pic'] = 'http://localhost:5000'+window_pic['window_pic']
-          //
-          // }
-
-
         });
       } catch (e) {
       }
@@ -165,8 +145,8 @@ export default {
       handler(val) {
         Object.assign(this.$data, this.$options.data());
         // +的作用是隐式转化
-        this.window_no = +val.params.window_no;
-        console.log(this.window_no)
+        this.canteen_id = +val.params.canteen_id;
+        console.log(this.canteen_id)
         this.handleFetchData();
       },
       immediate: true,

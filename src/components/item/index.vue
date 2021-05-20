@@ -3,20 +3,20 @@
 
     <template v-if="!isCart">
 
-      <li class="item-box" v-for="(item, index) in list" :key="index" @click="$router.push({name: 'detail', params: {window_no: item.window_no}})">
+      <li class="item-box" v-for="(item, index) in list" :key="index" @click="$router.push({name: 'detail', params: {canteen_id: item.canteen_id}})">
         <div class="img-box">
-          <img class="img" :src="item.window_pic" :alt="item.name" />
+          <img class="img" :src="item.canteen_pic" :alt="item.name" />
         </div>
 
         <div class="intr-box">
           <div class="top-box">
-            <h3 class="name">{{item.window_name}}</h3>
+            <h3 class="name">{{item.canteen_name}}</h3>
             <div class="distance">{{item.distance}}</div>
           </div>
 
           <div class="top-box">
-            <h3 class="name">{{item.window_district}}区</h3>
-            <div class="distance">{{item.window_floor}} 层</div>
+            <h3 class="name">{{item.canteen_district}}区</h3>
+            <div class="distance">{{item.canteen_floor}} 层</div>
           </div>
 
 
@@ -24,9 +24,9 @@
           <div class="bottom-box">
             <div class="price-box">
               <Rate
-                :count="10"
+                :count="5"
                 disabled
-                v-model="item.window_score" />
+                v-model="item.canteen_score.canteen_score_total" />
             </div>
           </div>
         </div>
