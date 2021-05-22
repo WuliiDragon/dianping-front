@@ -80,8 +80,8 @@ export default {
           callback: () => (this.isError = false)
         });
       }
-      const { msg: res, userid: id } = await this.$http.post('http://localhost:5000/api/login', {
-        username: this.form.username,
+      const { msg: res, userid: id } = await this.$http.post('http://127.0.0.1:5000/user/login', {
+        user_name: this.form.username,
         password: this.form.password
       });
       // eslint-disable-next-line eqeqeq

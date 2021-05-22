@@ -4,13 +4,13 @@
     <Header title="商品详情">
 
       <div style="margin-left:1px">
-        <Button  icon="md-arrow-round-back" @click="back"></Button>
+        <Button icon="md-arrow-round-back" @click="back"></Button>
       </div>
 
     </Header>
 
-        <div style="padding-top: 20px">
-      <Form :model="formItem" :label-width="80" >
+    <div style="padding-top: 20px">
+      <Form :model="formItem" :label-width="80">
 
 
         <FormItem label="评价">
@@ -39,98 +39,184 @@
         <FormItem label="服务">
           <Rate v-model="score.score_service"/>
         </FormItem>
+        <FormItem label="图片">
 
-        <FormItem>
-          <div class="demo-upload-list" v-for="item in uploadList">
-            <template v-if="item.status === 'finished'">
-              <img :src="item.url">
-              <div class="demo-upload-list-cover">
-                <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+          <div>
+
+            <div class="demo-upload-list" v-for="item in uploadList">
+
+              <template v-if="item.status === 'finished'">
+
+                <img :src="item.url">
+                <div class="demo-upload-list-cover">
+                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                  <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+                </div>
+              </template>
+              <template v-else>
+                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+              </template>
+            </div>
+
+
+            <Upload
+              ref="upload"
+              :show-upload-list="false"
+              :default-file-list="defaultList"
+              :on-success="handleSuccess"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              :before-upload="handleBeforeUpload"
+              multiple
+              type="drag"
+              action="http://127.0.0.1:5000/pic/uploadPic"
+              style="display: inline-block;width:58px;">
+              <div style="width: 58px;height:58px;line-height: 58px;">
+                <Icon type="camera" size="20"></Icon>
               </div>
-            </template>
-            <template v-else>
-              <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-            </template>
+            </Upload>
+            <Modal title="查看图片" v-model="visible">
+              <img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">
+            </Modal>
           </div>
-<!--          <Upload-->
-<!--            ref="upload"-->
-<!--            :show-upload-list="false"-->
-<!--            :default-file-list="defaultList"-->
-<!--            :on-success="handleSuccess"-->
-<!--            :format="['jpg','jpeg','png']"-->
-<!--            :max-size="2048"-->
-<!--            :on-format-error="handleFormatError"-->
-<!--            :on-exceeded-size="handleMaxSize"-->
-<!--            :before-upload="handleBeforeUpload"-->
-<!--            multiple-->
-<!--            type="drag"-->
-<!--            action="//jsonplaceholder.typicode.com/posts/"-->
-<!--            style="display: inline-block;width:58px;">-->
-<!--            <div style="width: 58px;height:58px;line-height: 58px;">-->
-<!--              <Icon type="ios-camera" size="20"></Icon>-->
-<!--            </div>-->
-<!--          </Upload>-->
-          <Modal title="View Image" v-model="visible">
-            <img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">
-          </Modal>
-
-
         </FormItem>
+
+
+
+
+
         <FormItem>
           <Button type="primary" @click="insert">提交评价</Button>
           <Button style="margin-left: 8px">重置</Button>
         </FormItem>
       </Form>
+
+
+
+
+
+
+
     </div>
 
   </div>
 
 </template>
 <script>
+import Qs from 'qs'
+
 export default {
   data() {
+
     return {
-      context:'',
-      score:{
-        score_taste:0,
-          score_health:0,
-          score_money:0,
-          score_service:0,
-          score_fullness:0,
+
+      defaultList: [
+        {
+          'name': 'a42bdcc1178e62b4694c830f028db5c0',
+          'url': 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
+        },
+        {
+          'name': 'bc7521e033abdd1e92222d733590f104',
+          'url': 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
+        }
+      ],
+      imgName: '',
+      visible: false,
+      uploadList: [
+        {
+        'name': 'bc7521e033abdd1e92222d733590f104',
+        'url': 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
+      }
+      ],
+
+
+
+
+      context: '第三次来了',
+      score: {
+        score_taste: 2,
+        score_health: 3,
+        score_money:4 ,
+        score_service: 1,
+        score_fullness: 2,
       }
     };
   },
   methods: {
-    back(){
-      console.log(this.post_id)
-      this.$router.push({name: 'detail' ,params:{window_no: this.post_id}})
+    back() {
+      console.log(this.post_id);
+      this.$router.push({ name: 'detail', params: { window_no: this.post_id } });
     },
     insert() {
 
-      if (!this.$store.state.isLogin){
-          alert('您还未登录')
-          return
-      }
+      // if (!this.$store.state.isLogin){
+      //     alert('您还未登录')
+      //     return
+      // }
       try {
-        var self = this
 
-        this.$http.post('http://localhost:5000/api/insertComment',{
-          'user_id':1,
-          'post_id':self.post_id,
-          'content':self.context,
-          'score_taste':self.score.score_taste,
-          'score_health':self.score.score_health,
-          'score_money':self.score.score_money,
-          'score_service':self.score.score_service,
-          'score_fullness':self.score.score_fullness,
-        }).then((response) => {
-          self.$router.push({name: 'detail' ,params:{window_no: self.post_id}})
+        var self = this;
+        var data = Qs.stringify({
+          'user_id': 1,
+          'canteen_id': this.canteen_id,
+          'comment_zone': 1,
+          'comment_content': self.context,
+          'taste_score': self.score.score_taste,
+          'health_score': self.score.score_health,
+          'money_score': self.score.score_money,
+          'service_score': self.score.score_service,
+          'fullness_score': self.score.score_fullness,
+        })
+
+
+        this.$http.post('http://127.0.0.1:5000/comment/insertComment',data, {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+        ).then((response) => {
+          self.$router.push({ name: 'detail', params: { window_no: self.post_id } });
 
         });
       } catch (e) {
       }
-    }
+    },
+
+    handleView (name) {
+      this.imgName = name;
+      this.visible = true;
+    },
+    handleRemove (file) {
+      // 从 upload 实例删除数据
+      const fileList = this.$refs.upload.fileList;
+      this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+    },
+    handleSuccess (res, file) {
+      // 因为上传过程为实例，这里模拟添加 url
+      file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
+      file.name = '7eb99afb9d5f317c912f08b5212fd69a';
+    },
+    handleFormatError (file) {
+      this.$Notice.warning({
+        title: '文件格式不正确',
+        desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片。'
+      });
+    },
+    handleMaxSize (file) {
+      this.$Notice.warning({
+        title: '超出文件大小限制',
+        desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
+      });
+    },
+    handleBeforeUpload () {
+      const check = this.uploadList.length < 9;
+      if (!check) {
+        this.$Notice.warning({
+          title: '最多只能上传 9 张图片。'
+        });
+      }
+      return check;
+    },
   },
   mounted() {
   },
@@ -138,16 +224,13 @@ export default {
     $route: {
       handler(val) {
         Object.assign(this.$data, this.$options.data());
-
-        this.post_id = +val.params.post_id;
+        this.canteen_id = +val.params.canteen_id;
         this.user_id = +val.params.user_id;
       },
       immediate: true,
       deep: true
     }
   }
-
-
 
 };
 </script>

@@ -2,19 +2,19 @@
 
   <div class="detail-wrap">
     <Header title="商品详情">
-      <Button :size="buttonSize"  :ghost="true" to="/detail">
+      <Button  :ghost="true" to="/detail">
         <Icon type="ios-arrow-back" />
         返回
       </Button>
     </Header>
 
-    <template v-if="isAjax">
-      <div class="loading-box">加载中...</div>
-      <Loading></Loading>
+<!--    <template v-if="isAjax">-->
+<!--      <div class="loading-box">加载中...</div>-->
+<!--      <Loading></Loading>-->
 
-    </template>
+<!--    </template>-->
 
-    <template v-else>
+    <template >
       <Scroll :data="[data]" isBottom  height="800px">
         <div class="goods-box">
           <div class="img-box">
@@ -61,21 +61,6 @@
             <div class="content-box">
               <div class="username">{{item.comment_username}}</div>
               <div class="score-box">
-<!--                <Rate allow-half v-model="item.score_taste" count="10" >-->
-<!--                  <span class="text">综合</span>-->
-
-<!--                </Rate>-->
-
-
-<!--                <span class="text">味道</span>-->
-<!--                <Rate allow-half v-model="item.score_taste" count="10" />-->
-
-
-<!--                <span class="text">{{'味道:'  +item.score_taste}} </span>-->
-<!--                <span class="text">{{'满意度:'+item.score_fullness}} </span>-->
-<!--                <span class="text">{{'环境:'  +item.score_money}} </span>-->
-<!--                <span class="text">{{'卫生:'  +item.score_service}} </span>-->
-<!--                <span class="text">{{'服务:'  +item.score_service}} </span>-->
               </div>
 
 
@@ -121,8 +106,7 @@ export default {
 
 
     to_score(){
-      this.$router.push({name: 'score', params: {post_id: this.window_no,user_id:1}})
-
+      this.$router.push({name: 'score', params: {canteen_id: this.canteen_id,user_id:1}})
     },
 
 

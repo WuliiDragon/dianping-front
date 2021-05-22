@@ -23,7 +23,7 @@ const router = new Router({
       component: () => import('@/pages/search')
     },
     {
-      path: '/score/:user_id:post_id',
+      path: '/score/:user_id:canteen_id',
       name: 'score',
       component: () => import('@/pages/score')
     },
@@ -38,16 +38,11 @@ const router = new Router({
       component: () => import('@/pages/regist')
     },
     {
-      path: '/detail/:window_no',
+      path: '/detail/:canteen_id',
       name: 'detail',
       component: () => import('@/pages/detail')
     },
-    {
-      path: '/payment',
-      name: 'payment',
-      meta: { auth: true },
-      component: () => import('@/pages/payment')
-    },
+
     {
       path: '/mine',
       name: 'mine',
