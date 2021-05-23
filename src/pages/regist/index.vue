@@ -90,8 +90,8 @@ export default {
         });
       }
       console.log(this.form);
-      const { msg: res } = await this.$http.post('http://localhost:5000/api/regist', {
-        'username': this.form.username,
+      const { msg: res } = await this.$http.post('http://localhost:5000/user/register', {
+        'user_name': this.form.username,
         'password1': this.form.password,
         'password2': this.form.repassword
       });

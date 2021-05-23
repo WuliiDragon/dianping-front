@@ -28,6 +28,11 @@ const router = new Router({
       component: () => import('@/pages/score')
     },
     {
+      path: '/add/:user_id',
+      name: 'add',
+      component: () => import('@/pages/add')
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('@/pages/login')

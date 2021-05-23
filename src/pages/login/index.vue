@@ -53,7 +53,8 @@ export default {
         avatar:
           'http://static.galileo.xiaojukeji.com/static/tms/default_header.png',
         name: '游客',
-        id: ''
+        id: '',
+        root: '0'
       },
       isAjax: false,
       isError: false
@@ -69,7 +70,7 @@ export default {
       // 解决苹果手机表单页面无法复原问题
       window.scroll(0, 0);
     },
-    handleRegist(){
+    handleRegist() {
       this.$router.push('regist');
     },
     async handleLogin() {
@@ -80,20 +81,30 @@ export default {
           callback: () => (this.isError = false)
         });
       }
-      const { msg: res, userid: id } = await this.$http.post('http://127.0.0.1:5000/user/login', {
-        user_name: this.form.username,
-        password: this.form.password
-      });
+      var param = new FormData();
+      param.append('user_name', this.form.username);
+      param.append('password', this.form.password);
+      const { msg: res, userid: id, permission: per, userpic: path } = await this.$http.post('http://localhost:5000/user/login', param);
       // eslint-disable-next-line eqeqeq
       if (res == '登陆成功') {
+        console.log(path);
         this.user.name = this.form.username;
         this.user.id = id;
+        // eslint-disable-next-line eqeqeq
+        if (per == true) {
+          this.user.root = '1';
+        } else {
+          this.user.root = '0';
+        }
+        if (path != null) {
+          this.user.avatar = path;
+        }
         this.$store.commit('$handleLogin', { isLogin: 1, userInfo: this.user });
         this.$router.replace({ path: '/' });
       } else {
         alert('密码错误');
       }
-    },
+    }
   }
 };
 </script>

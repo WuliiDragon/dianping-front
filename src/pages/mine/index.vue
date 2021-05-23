@@ -7,20 +7,37 @@
           <img class="avatar" :src="_user.avatar" alt="头像" />
         </div>
         <div class="name">{{_user.name}}</div>
-        <Upload action="http://127.0.0.1:5000/api/up_photo"
-                :on-success="handleSuccess"
-        name='profile_photo'>
-          <Button icon="ios-cloud-upload-outline">Upload files</Button>
-        </Upload>
+        <div>
+          <Upload
+            :before-upload="handleUpload"
+            :on-success="handleSuccess"
+            action="http://localhost:5000/pic/uploadUserPhoto">
+            <Button icon="ios-cloud-upload-outline">Select the file to upload</Button>
+          </Upload>
+          <div v-if="file !== null">Upload file: {{ file.name }}
+            <Button type="text" @click="upload" :loading="loadingStatus">{{ loadingStatus ? 'Uploading' : 'Click to upload' }}</Button>
+          </div>
+        </div>
         <div class="btn-logout" @click="handleLogout">退出</div>
       </div>
     </scroll>
+    <div class="manager" v-if="this._user.root=='1'">
+      <Button icon="ios-cloud-upload-outline" @click="$router.push('home')">
+        管理员
+      </Button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Mine',
+  data() {
+    return {
+      file: null,
+      loadingStatus: false
+    };
+  },
   computed: {
     _user() {
       console.log(this.$store.state.userInfo);
@@ -37,13 +54,28 @@ export default {
         }
       });
     },
-    handleSuccess(res, file) {
-      console.log(res);
-      const { Path: mpath } = res;
-      console.log(mpath);
-      this._user.avatar = mpath;
-      this.$store.commit('$handleLogin', { isLogin: 1, userInfo: this._user });
-    }
+    handleUpload(file) {
+      this.file = file;
+      return false;
+    },
+    async upload() {
+      this.loadingStatus = true;
+      var param = new FormData();
+      param.append('user_pic', this.file);
+      param.append('user_id', this._user.id);
+      this.$http.post('http://localhost:5000/pic/uploadUserPhoto', param).then((response) =>{
+        const { path: avatar } = response;
+        console.log(response);
+        this._user.avatar = avatar;
+        this.$store.commit('$handleLogin', { isLogin: 1, userInfo: this._user });
+        console.log(this._user);
+      });
+      setTimeout(() => {
+        this.file = null;
+        this.loadingStatus = false;
+        this.$Message.success('Success')
+      }, 1500);
+    },
   }
 };
 </script>

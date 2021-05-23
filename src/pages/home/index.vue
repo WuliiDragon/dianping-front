@@ -14,6 +14,10 @@
     <Tabs value="name1"   :animated="false">
       <TabPane label="固定发帖" name="name1"  >
         <div >
+          <Button :size="small"  @click="to_add">
+            <Icon type="ios-arrow-back" />
+            添加
+          </Button>
           <Scroll  :data="form.list"   height="1000px" style="padding-bottom: 100px">
             <Item :list="form.list" isHome></Item>
           </Scroll>
@@ -49,7 +53,7 @@ export default {
 
     };
   },
-  computed: mapState(['nowAddress', 'isLogin']),
+  computed: mapState(['userInfo', 'isLogin']),
   activated() {
     if (this.isFirst) {
       this.isFirst = false;
@@ -61,6 +65,10 @@ export default {
     }
   },
   methods: {
+    to_add() {
+      console.log(this.userInfo.id);
+      this.$router.push({ name: 'add', params: { user_id: this.userInfo.id } });
+    },
     async handleFetchData() {
 
       try {
