@@ -44,12 +44,12 @@
           <div>
 
             <div class="demo-upload-list" v-for="item in uploadList">
-
               <template v-if="item.status === 'finished'">
-
-                <img :src="item.url">
+                <div style="width: 116px;height: 87px;">
+                <img :src="item.url" style="width: 100%;height: 100%;">
+                </div>
                 <div class="demo-upload-list-cover">
-                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                  <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
                   <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
                 </div>
               </template>
@@ -62,7 +62,7 @@
             <Upload
               ref="upload"
               :show-upload-list="false"
-              :default-file-list="defaultList"
+              :data="submitData"
               :on-success="handleSuccess"
               :format="['jpg','jpeg','png']"
               :max-size="2048"
@@ -111,28 +111,15 @@ export default {
   data() {
 
     return {
+      submitData: { // 这里是需要携带的数据
+        srcLanguage: "en",
+        zone_id:'1',
+        pic_zone:'2'
+      },
 
-      defaultList: [
-        {
-          'name': 'a42bdcc1178e62b4694c830f028db5c0',
-          'url': 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
-        },
-        {
-          'name': 'bc7521e033abdd1e92222d733590f104',
-          'url': 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
-        }
-      ],
       imgName: '',
       visible: false,
-      uploadList: [
-        {
-        'name': 'bc7521e033abdd1e92222d733590f104',
-        'url': 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
-      }
-      ],
-
-
-
+      uploadList: [],
 
       context: '第三次来了',
       score: {
@@ -156,6 +143,13 @@ export default {
       //     return
       // }
       try {
+        var pic_ids=""
+
+        for(let i=0;i<this.uploadList.length;i++){
+          var pic = this.uploadList[i]
+          pic_ids += pic.id+'_'
+        }
+        console.log(pic_ids)
 
         var self = this;
         var data = Qs.stringify({
@@ -168,11 +162,12 @@ export default {
           'money_score': self.score.score_money,
           'service_score': self.score.score_service,
           'fullness_score': self.score.score_fullness,
+          'pic_list':pic_ids
         })
 
 
         this.$http.post('http://127.0.0.1:5000/comment/insertComment',data, {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         }
         ).then((response) => {
           self.$router.push({ name: 'detail', params: { window_no: self.post_id } });
@@ -187,14 +182,20 @@ export default {
       this.visible = true;
     },
     handleRemove (file) {
-      // 从 upload 实例删除数据
       const fileList = this.$refs.upload.fileList;
       this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
     },
     handleSuccess (res, file) {
-      // 因为上传过程为实例，这里模拟添加 url
-      file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
-      file.name = '7eb99afb9d5f317c912f08b5212fd69a';
+      this.uploadList.push(
+        {
+          name:'',
+          url:res.pic_url,
+          id:res.pic_id,
+          status:'finished'
+        }
+
+      )
+      console.log(this.uploadList)
     },
     handleFormatError (file) {
       this.$Notice.warning({

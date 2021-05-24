@@ -6,6 +6,7 @@
         <input class="search" type="text" v-model="form.keyword" placeholder="请输入关键字" @keyup="handleSearch($event)" />
       </div>
 
+
       <span class="btn-search" @click="$router.push({name: isLogin ? 'collect' : 'login'})">
         <i :class="['iconfont', isLogin ? 'icon-star' : 'icon-login']"></i>
       </span>
@@ -14,21 +15,24 @@
     <Tabs value="name1"   :animated="false">
       <TabPane label="固定发帖" name="name1"  >
         <div >
-          <Button :size="small"  @click="to_add">
-            <Icon type="ios-arrow-back" />
-            添加
-          </Button>
+
+          <div v-if="userInfo.permission">
+            <Button type="primary"  @click="to_add" long>+</Button>
+
+          </div>
+          <template v-else>
+            <div ></div>
+          </template>
+
+
           <Scroll  :data="form.list"   height="1000px" style="padding-bottom: 100px">
             <Item :list="form.list" isHome></Item>
           </Scroll>
 
         </div>
-
       </TabPane>
 
       <TabPane label="自主发帖" name="name2">
-
-
       </TabPane>
     </Tabs>
 
@@ -55,6 +59,8 @@ export default {
   },
   computed: mapState(['userInfo', 'isLogin']),
   activated() {
+    console.log(this.userInfo.root);
+
     if (this.isFirst) {
       this.isFirst = false;
       this.handleFetchData();
@@ -66,7 +72,8 @@ export default {
   },
   methods: {
     to_add() {
-      console.log(this.userInfo.id);
+
+      // console.log(this.userInfo.id);
       this.$router.push({ name: 'add', params: { user_id: this.userInfo.id } });
     },
     async handleFetchData() {

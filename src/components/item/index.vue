@@ -1,7 +1,7 @@
 <template>
   <ul class="item-wrap" :class="{padding: isHome}">
 
-    <template v-if="!isCart">
+    <template >
 
       <li class="item-box" v-for="(item, index) in list" :key="index" @click="$router.push({name: 'detail', params: {canteen_id: item.canteen_id}})">
         <div class="img-box">
@@ -11,10 +11,16 @@
         <div class="intr-box">
           <div class="top-box">
             <h3 class="name">{{item.canteen_name}}</h3>
-            <div class="distance">{{item.distance}}</div>
+            <div v-if="userInfo.permission" class="distance">
+              <Button type="error" shape="circle" icon="ios-trash"></Button>
+
+            </div>
           </div>
 
+
+
           <div class="top-box">
+
             <h3 class="name">{{item.canteen_district}}区</h3>
             <div class="distance">{{item.canteen_floor}} 层</div>
           </div>
@@ -30,55 +36,15 @@
             </div>
           </div>
         </div>
-
-<!--        <div class="intr-box2" v-else>-->
-<!--          <div class="btn-del" v-if="isShowDel" @click="handleDel(item, $event)">删除</div>-->
-<!--          <h2 class="goods-name">{{item.name}}</h2>-->
-<!--          <div class="other-box">-->
-<!--            <Star :score="item.star"></Star>-->
-<!--            <span class="text">{{'￥' + item.price + '/份'}}</span>-->
-<!--          </div>-->
-<!--          <div class="store-name">{{item.store.name}}</div>-->
-<!--          <ul class="promotion-list">-->
-<!--            <li class="_item-box" v-for="(_item, _index) in item.promotion" :key="_index">-->
-<!--              <i class="iconfont icon-boon" v-if="_item.type === 1"></i>-->
-<!--              <span class="text">{{_item.text}}</span>-->
-<!--            </li>-->
-<!--          </ul>-->
-<!--        </div>-->
       </li>
     </template>
 
-
-    <li class="item-box2" v-for="(item, index) in list" :key="index" @click="$router.push({name: 'detail', params: {id: item.id}})" v-else>
-      <div class="check-box">
-        <div class="btn-check" :class="{on: item.checked}" @click="handleToggleChecked(item, $event)"></div>
-      </div>
-      <div class="img-box">
-        <img class="img" :src="item.imgUrl" :alt="item.name" />
-      </div>
-      <div class="intr-box">
-        <h2 class="goods-name">{{item.name}}</h2>
-        <div class="star-box">
-          <Star :score="item.star"></Star>
-        </div>
-        <div class="price">{{'￥' + item.price + '/份'}}</div>
-        <div class="btn-box">
-          <span class="btn btn-sub" @click="handleToggleNum({goods: item, type: 'sub'}, $event)">
-            <i class="iconfont icon-sub"></i>
-          </span>
-          <span class="num">{{item.cartNum}}</span>
-          <span class="btn btn-add" @click="handleToggleNum({goods: item, type: 'add'}, $event)">
-            <i class="iconfont icon-add"></i>
-          </span>
-        </div>
-      </div>
-    </li>
   </ul>
 </template>
 
 <script>
 import Star from '@/components/star';
+import { mapState } from 'vuex';
 
 export default {
   name: 'Item',
@@ -103,33 +69,14 @@ export default {
       default: false
     }
   },
+  activated() {
+    console.log(this.userInfo.root);
+  },
   methods: {
-    handleDel(goods, e) {
-      e.stopPropagation();
-      this.$confirm({
-        msg: '你确定要删除该商品吗？',
-        confirm: () => this.$store.commit('$handleCollect', goods)
-      });
-    },
-    handleToggleNum(obj, e) {
-      e.stopPropagation();
-      if (obj.type === 'sub' && obj.goods.cartNum < 2) {
-        return this.$confirm({
-          msg: '你确定要删除该商品吗？',
-          confirm: () => this.$store.commit('$handleCart', obj)
-        });
-      }
-      this.$store.commit('$handleCart', obj);
-    },
-    handleToggleChecked(goods, e) {
-      e.stopPropagation();
-      this.$store.commit('$handleToggleChecked', {
-        goods,
-        // +的作用是隐式类型转换
-        checked: +!goods.checked
-      });
-    }
-  }
+
+  },
+  computed: mapState(['userInfo', 'isLogin']),
+
 };
 </script>
 

@@ -4,7 +4,7 @@
 
       <div style="margin-left:1px">
 
-        <Button :size="buttonSize"  :ghost="true" to="/home" replace>
+        <Button :ghost="true" to="/home" replace>
           <Icon type="ios-arrow-back" />
           返回
         </Button>
@@ -39,6 +39,7 @@
 
 <script>
 import { Loading } from '@/components';
+import Qs from 'qs';
 
 export default {
   name: 'Login',
@@ -54,14 +55,13 @@ export default {
           'http://static.galileo.xiaojukeji.com/static/tms/default_header.png',
         name: '游客',
         id: '',
-        root: '0'
+        root: 0
       },
       isAjax: false,
       isError: false
     };
   },
   mounted() {
-    this.handleFetchData();
   },
   methods: {
     handleBlur() {
@@ -84,26 +84,33 @@ export default {
       var param = new FormData();
       param.append('user_name', this.form.username);
       param.append('password', this.form.password);
-      const { msg: res, userid: id, permission: per, userpic: path } = await this.$http.post('http://localhost:5000/user/login', param);
-      // eslint-disable-next-line eqeqeq
-      if (res == '登陆成功') {
-        console.log(path);
-        this.user.name = this.form.username;
-        this.user.id = id;
-        // eslint-disable-next-line eqeqeq
-        if (per == true) {
-          this.user.root = '1';
-        } else {
-          this.user.root = '0';
-        }
-        if (path != null) {
-          this.user.avatar = path;
-        }
-        this.$store.commit('$handleLogin', { isLogin: 1, userInfo: this.user });
-        this.$router.replace({ path: '/' });
-      } else {
-        alert('密码错误');
+
+      try {
+
+        var self = this;
+        var data = Qs.stringify({
+          'user_name':this.form.username,
+          'password': this.form.password,
+        })
+
+
+        this.$http.post('http://127.0.0.1:5000/user/login',data, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          }
+        ).then((response) => {
+          console.log(response.msg)
+
+          if(response.msg=='登陆成功'){
+            this.$store.commit('$handleLogin', { isLogin: 1, userInfo: response });
+            this.$router.replace({ path: '/' });
+
+          }else{
+            alert(response.msg)
+          }
+        });
+      } catch (e) {
       }
+
     }
   }
 };

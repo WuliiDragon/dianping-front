@@ -65,13 +65,15 @@
 
 
               <p class="text">{{item.comment_content}}</p>
-<!--              <div class="pic-bar" v-if="item.pics.length">-->
-<!--                <ul class="pic-list">-->
-<!--                  <li class="pic-box" v-for="(_item, _index) in item.pics" :key="_index">-->
-<!--                    <img class="pic" :src="_item" alt />-->
-<!--                  </li>-->
-<!--                </ul>-->
-<!--              </div>-->
+              <div class="pic-bar" v-if="item.comment_pic.length">
+                <ul class="pic-list">
+                  <li class="pic-box" v-for="(_item, _index) in item.comment_pic" :key="_index">
+                    <img class="pic" :src="_item" alt />
+                  </li>
+                </ul>
+              </div>
+
+
             </div>
           </li>
         </ul>

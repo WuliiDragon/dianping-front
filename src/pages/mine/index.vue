@@ -12,7 +12,7 @@
             :before-upload="handleUpload"
             :on-success="handleSuccess"
             action="http://localhost:5000/pic/uploadUserPhoto">
-            <Button icon="ios-cloud-upload-outline">Select the file to upload</Button>
+            <Button icon="ios-cloud-upload-outline">点击上传头像</Button>
           </Upload>
           <div v-if="file !== null">Upload file: {{ file.name }}
             <Button type="text" @click="upload" :loading="loadingStatus">{{ loadingStatus ? 'Uploading' : 'Click to upload' }}</Button>
@@ -50,6 +50,7 @@ export default {
         msg: '你确定要退出登录吗？',
         confirm: () => {
           this.$store.commit('$handleLogin', { isLogin: 0, userInfo: {} });
+
           this.$router.push({ name: 'home' });
         }
       });
