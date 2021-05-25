@@ -154,7 +154,7 @@ export default {
         var self = this;
         var data = Qs.stringify({
           'user_id': 1,
-          'canteen_id': this.canteen_id,
+          'zone_id': self.canteen_id,
           'comment_zone': 1,
           'comment_content': self.context,
           'taste_score': self.score.score_taste,
@@ -170,7 +170,10 @@ export default {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         }
         ).then((response) => {
-          self.$router.push({ name: 'detail', params: { window_no: self.post_id } });
+          if(response.msg=='评论插入成功'){
+              self.$router.push({ name: 'detail', params: { canteen_id: self.canteen_id } });
+          }
+
 
         });
       } catch (e) {
