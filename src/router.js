@@ -55,6 +55,17 @@ const router = new Router({
       component: () => import('@/pages/mine')
     },
     {
+      path: '/course',
+      name: 'course',
+      meta: { auth: true },
+      component: () => import('@/pages/course')
+    },
+    {
+      path: '/addcourse/:user_id',
+      name: 'addcourse',
+      component: () => import('@/pages/addcourse')
+    },
+    {
       path: '*',
       redirect: '/home'
     }

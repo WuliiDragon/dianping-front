@@ -19,19 +19,14 @@
             添加
           </Button>
           <Scroll  :data="form.list"   height="1000px" style="padding-bottom: 100px">
-            <Item :list="form.list" isHome></Item>
+            <CourseItem :list="form.list" isHome></CourseItem>
           </Scroll>
 
         </div>
 
       </TabPane>
 
-      <TabPane label="自主发帖" name="name2">
-
-
-      </TabPane>
     </Tabs>
-
 
   </div>
 </template>
@@ -39,10 +34,11 @@
 <script>
 import { mapState } from 'vuex';
 import { Slider, Item } from '@/components';
+import CourseItem from "../../components/courseitem";
 
 export default {
   name: 'Home',
-  components: { Slider, Item },
+  components: {CourseItem, Slider, Item },
   data() {
     return {
       form: {
@@ -67,21 +63,15 @@ export default {
   methods: {
     to_add() {
       console.log(this.userInfo.id);
-      this.$router.push({ name: 'add', params: { user_id: this.userInfo.id } });
+      this.$router.push({ name: 'addcourse', params: { user_id: this.userInfo.id } });
     },
     async handleFetchData() {
 
       try {
-        this.$http.get('http://127.0.0.1:5000/canteen/getCanteensList').then((response) => {
-          console.log(response)
+        this.$http.get('http://127.0.0.1:5000/course/getCoursesList').then((response) => {
+          console.log(response);
+          this.form.list = [...this.form.list, ...response.courses_list];
 
-
-          this.form.list = [...this.form.list, ...response.canteens_list];
-          for (let i in this.form.list) {
-            let win =  this.form.list[i]
-            win.canteen_pic= 'http://127.0.0.1:5000/img'+win.canteen_pic
-            console.log(win)
-          }
 
 
         });

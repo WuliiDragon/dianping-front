@@ -15,7 +15,7 @@ export default {
   components: { Nav },
   computed: {
     _isShow() {
-      let arr = ['home', 'mine'];
+      let arr = ['home', 'course', 'mine'];
       !this.$store.state.cartList.length && arr.push('cart');
       return arr.includes(this.$route.name);
     }
