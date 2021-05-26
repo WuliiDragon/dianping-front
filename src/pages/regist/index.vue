@@ -90,11 +90,11 @@ export default {
         });
       }
       console.log(this.form);
-      const { msg: res } = await this.$http.post('http://localhost:5000/user/register', {
-        'user_name': this.form.username,
-        'password1': this.form.password,
-        'password2': this.form.repassword
-      });
+      var param = new FormData();
+      param.append('user_name', this.form.username);
+      param.append('password1', this.form.password);
+      param.append('password2', this.form.password);
+      const { msg: res } = await this.$http.post('http://localhost:5000/user/register', param);
       // eslint-disable-next-line eqeqeq
       if (res == '注册成功') {
         this.$router.replace({ path: '/login' });

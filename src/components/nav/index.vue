@@ -23,7 +23,7 @@ export default {
       nav: [
 
         { url: '/home', text: '食堂', icon: 'md-beer' },
-        { url: '/home', text: '课程', icon: 'icon-home' },
+        { url: '/course', text: '课程', icon: 'icon-home' },
         { url: '/mine', text: '我的', icon: 'icon-mine' }
       ]
     };

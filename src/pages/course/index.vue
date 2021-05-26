@@ -6,55 +6,27 @@
         <input class="search" type="text" v-model="form.keyword" placeholder="请输入关键字" @keyup="handleSearch($event)" />
       </div>
 
-
       <span class="btn-search" @click="$router.push({name: isLogin ? 'collect' : 'login'})">
         <i :class="['iconfont', isLogin ? 'icon-star' : 'icon-login']"></i>
       </span>
     </div>
 
     <Tabs value="name1"   :animated="false">
-      <div v-if="userInfo.permission">
-        <Button type="primary"  @click="to_add" long>添加餐厅档口</Button>
-
-      </div>
-      <template v-else>
-        <div ></div>
-      </template>
-
       <TabPane label="固定发帖" name="name1"  >
         <div >
-
+          <Button :size="small"  @click="to_add">
+            <Icon type="ios-arrow-back" />
+            添加
+          </Button>
           <Scroll  :data="form.list"   height="1000px" style="padding-bottom: 100px">
-            <Item :list="form.list" isHome></Item>
+            <CourseItem :list="form.list" isHome></CourseItem>
           </Scroll>
 
         </div>
-      </TabPane>
-
-      <TabPane label="自主发帖" name="name2">
-
-        <div v-if="userInfo.permission">
-          <Button type="primary"  @click="to_add" long>+</Button>
-
-        </div>
-        <template v-else>
-          <div ></div>
-        </template>
-
-        <Scroll isBottom  height="800px">
-          <li  v-for="(item, index) in post_data.posts_list" :key="index">
-            <div style="height: 35px;      margin: 0 15px;       border-top: 1px solid $bdeee;
-">
-              <div class="username">{{item.post_title}}
-              </div>
-            </div>
-          </li>
-        </Scroll>
-
 
       </TabPane>
+
     </Tabs>
-
 
   </div>
 </template>
@@ -62,18 +34,16 @@
 <script>
 import { mapState } from 'vuex';
 import { Slider, Item } from '@/components';
+import CourseItem from "../../components/courseitem";
 
 export default {
   name: 'Home',
-  components: { Slider, Item },
+  components: {CourseItem, Slider, Item },
   data() {
     return {
       form: {
         keyword: '',
         list: [],
-      },
-      post_data:{
-
       },
       isFirst:true,
 
@@ -84,7 +54,6 @@ export default {
     if (this.isFirst) {
       this.isFirst = false;
       this.handleFetchData();
-      this.handleFetchPostData()
     }
     // 解决搜索回来页面不能滚动bug
     if (this.$refs.scrollRef) {
@@ -93,35 +62,16 @@ export default {
   },
   methods: {
     to_add() {
-      this.$router.push({ name: 'add', params: { user_id: this.userInfo.id } });
+      console.log(this.userInfo.id);
+      this.$router.push({ name: 'addcourse', params: { user_id: this.userInfo.id } });
     },
-
-    async handleFetchPostData() {
-      try {
-        this.$http.get('http://127.0.0.1:5000/post/getPostsList').then((response) => {
-          this.post_data = response
-          console.log(this.post_data)
-
-
-        });
-      } catch (e) {
-      }
-    },
-
-
     async handleFetchData() {
 
       try {
-        this.$http.get('http://127.0.0.1:5000/canteen/getCanteensList').then((response) => {
-          console.log(response)
+        this.$http.get('http://127.0.0.1:5000/course/getCoursesList').then((response) => {
+          console.log(response);
+          this.form.list = [...this.form.list, ...response.courses_list];
 
-
-          this.form.list = [...this.form.list, ...response.canteens_list];
-          for (let i in this.form.list) {
-            let win =  this.form.list[i]
-            win.canteen_pic= 'http://127.0.0.1:5000/img'+win.canteen_pic
-            console.log(win)
-          }
 
 
         });
