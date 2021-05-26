@@ -41,7 +41,7 @@
             <Button icon="ios-create-outline"
                     @click="to_score">
             </Button>
-            <Button icon="ios-heart"></Button>
+<!--            <Button icon="ios-heart"></Button>-->
           </div>
         </div>
 
@@ -71,6 +71,14 @@
                     <img class="pic" :src="_item" alt />
                   </li>
                 </ul>
+
+              </div>
+              <div v-if="userInfo.permission" class="distance" style="float: right;" onClick="">
+                <Button type="error" shape="circle" icon="ios-trash"></Button>
+              </div>
+<!--              <Icon type="heart"></Icon>-->
+              <div style="float: right;">
+                <Button type="text" icon="ios-heart" onClick="">{{item.comment_like}}</Button>
               </div>
 
 
@@ -85,6 +93,7 @@
 
 <script>
 import { Star, Loading } from '@/components';
+import { mapState } from 'vuex';
 
 export default {
   name: 'Detail',
@@ -101,9 +110,8 @@ export default {
       },
     };
   },
-  computed: {
+  computed: mapState(['userInfo', 'isLogin']),
 
-  },
   methods: {
 
 

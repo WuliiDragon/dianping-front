@@ -12,29 +12,26 @@
     <div style="padding-top: 20px">
       <Form :model="formItem" :label-width="80">
 
-        <FormItem label="评价">
+        <FormItem label="档口名称">
           <Input v-model="canteenName" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
-                 placeholder="请输入您的评价"></Input>
+                 placeholder="请输入档口名称"></Input>
         </FormItem>
-        <FormItem label="评价">
+        <FormItem label="区域">
           <Input v-model="canteenDistrict" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
-                 placeholder="请输入您的评价"></Input>
+                 placeholder="请输入档口所在区域"></Input>
         </FormItem>
-        <FormItem label="评价">
+        <FormItem label="楼层">
           <Input v-model="canteenFloor" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
-                 placeholder="请输入您的评价"></Input>
+                 placeholder="餐厅所在楼层"></Input>
         </FormItem>
-        <FormItem label="评价">
+        <FormItem label="详细描述">
           <Input v-model="canteenIntro" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
-                 placeholder="请输入您的评价"></Input>
+                 placeholder="请输入详细信息"></Input>
         </FormItem>
 
         <FormItem label="图片">
-
           <div>
-
             <div class="demo-upload-list" v-for="item in uploadList">
-
               <template v-if="item.status === 'finished'">
 
                 <img :src="item.url">
@@ -51,6 +48,7 @@
             <Upload
               ref="upload"
               :show-upload-list="false"
+              :data="submitData"
               :default-file-list="defaultList"
               :on-success="handleSuccess"
               :format="['jpg','jpeg','png']"
@@ -85,20 +83,13 @@
 </template>
 <script>
 import Qs from 'qs';
+import { mapState } from 'vuex';
 
 export default {
   data() {
     return {
 
       defaultList: [
-        {
-          'name': 'a42bdcc1178e62b4694c830f028db5c0',
-          'url': 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
-        },
-        {
-          'name': 'bc7521e033abdd1e92222d733590f104',
-          'url': 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
-        }
       ],
       imgName: '',
       visible: false,
@@ -112,7 +103,13 @@ export default {
       canteenName: '和园',
       canteenDistrict: '黄焖鸡',
       canteenFloor: '1',
-      canteenIntro: '黄焖鸡'
+      canteenIntro: '黄焖鸡',
+      pic_id:0,
+
+      submitData: { // 这里是需要携带的数据
+        srcLanguage: "en",
+        pic_zone:'3'
+      },
 
     };
   },
@@ -129,11 +126,12 @@ export default {
       try {
         var self = this;
         var data = Qs.stringify({
-          'user_id': self.user_id,
+          'user_id': self.userInfo.user_id,
           'canteen_name': self.canteenName,
           'canteen_district': self.canteenDistrict,
           'canteen_floor': self.canteenFloor,
           'canteen_intro': self.canteenIntro,
+          'pic_id':self.pic_id,
         });
 
         this.$http.post('http://127.0.0.1:5000/canteen/insertCanteen', data, {
@@ -156,9 +154,8 @@ export default {
       this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
     },
     handleSuccess(res, file) {
-      // 因为上传过程为实例，这里模拟添加 url
-      file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
-      file.name = '7eb99afb9d5f317c912f08b5212fd69a';
+      console.log(res)
+      this.pic_id = res.pic_id
     },
     handleFormatError(file) {
       this.$Notice.warning({
@@ -173,10 +170,10 @@ export default {
       });
     },
     handleBeforeUpload() {
-      const check = this.uploadList.length < 9;
+      const check = this.uploadList.length < 2;
       if (!check) {
         this.$Notice.warning({
-          title: '最多只能上传 9 张图片。'
+          title: '最多只能上传 1 张图片。'
         });
       }
       return check;
@@ -189,12 +186,14 @@ export default {
       handler(val) {
         Object.assign(this.$data, this.$options.data());
         this.canteen_id = +val.params.canteen_id;
-        this.user_id = +val.params.user_id;
+        // this.user_id = +val.params.user_id;
       },
       immediate: true,
       deep: true
     }
-  }
+  },
+  computed: mapState(['userInfo', 'isLogin']),
+
 
 };
 </script>

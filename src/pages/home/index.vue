@@ -13,17 +13,16 @@
     </div>
 
     <Tabs value="name1"   :animated="false">
+      <div v-if="userInfo.permission">
+        <Button type="primary"  @click="to_add" long>添加餐厅档口</Button>
+
+      </div>
+      <template v-else>
+        <div ></div>
+      </template>
+
       <TabPane label="固定发帖" name="name1"  >
         <div >
-
-          <div v-if="userInfo.permission">
-            <Button type="primary"  @click="to_add" long>+</Button>
-
-          </div>
-          <template v-else>
-            <div ></div>
-          </template>
-
 
           <Scroll  :data="form.list"   height="1000px" style="padding-bottom: 100px">
             <Item :list="form.list" isHome></Item>
@@ -33,6 +32,26 @@
       </TabPane>
 
       <TabPane label="自主发帖" name="name2">
+
+        <div v-if="userInfo.permission">
+          <Button type="primary"  @click="to_add" long>+</Button>
+
+        </div>
+        <template v-else>
+          <div ></div>
+        </template>
+
+        <Scroll isBottom  height="800px">
+          <li  v-for="(item, index) in post_data.posts_list" :key="index">
+            <div style="height: 35px;      margin: 0 15px;       border-top: 1px solid $bdeee;
+">
+              <div class="username">{{item.post_title}}
+              </div>
+            </div>
+          </li>
+        </Scroll>
+
+
       </TabPane>
     </Tabs>
 
@@ -53,6 +72,9 @@ export default {
         keyword: '',
         list: [],
       },
+      post_data:{
+
+      },
       isFirst:true,
 
     };
@@ -64,6 +86,7 @@ export default {
     if (this.isFirst) {
       this.isFirst = false;
       this.handleFetchData();
+      this.handleFetchPostData()
     }
     // 解决搜索回来页面不能滚动bug
     if (this.$refs.scrollRef) {
@@ -72,10 +95,22 @@ export default {
   },
   methods: {
     to_add() {
-
-      // console.log(this.userInfo.id);
       this.$router.push({ name: 'add', params: { user_id: this.userInfo.id } });
     },
+
+    async handleFetchPostData() {
+      try {
+        this.$http.get('http://127.0.0.1:5000/post/getPostsList').then((response) => {
+          this.post_data = response
+          console.log(this.post_data)
+
+
+        });
+      } catch (e) {
+      }
+    },
+
+
     async handleFetchData() {
 
       try {

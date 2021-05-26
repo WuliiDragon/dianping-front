@@ -12,7 +12,7 @@
           <div class="top-box">
             <h3 class="name">{{item.canteen_name}}</h3>
             <div v-if="userInfo.permission" class="distance">
-              <Button type="error" shape="circle" icon="ios-trash"></Button>
+              <Button type="error" shape="circle" icon="ios-trash" @click.stop="delete_canteen(item.canteen_id)"></Button>
 
             </div>
           </div>
@@ -73,6 +73,9 @@ export default {
     console.log(this.userInfo.root);
   },
   methods: {
+    delete_canteen(canteen_id){
+      console.log(canteen_id)
+    }
 
   },
   computed: mapState(['userInfo', 'isLogin']),
