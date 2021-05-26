@@ -31,25 +31,10 @@
 
         <FormItem label="图片">
           <div>
-            <div class="demo-upload-list" v-for="item in uploadList">
-              <template v-if="item.status === 'finished'">
-
-                <img :src="item.url">
-                <div class="demo-upload-list-cover">
-                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                  <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
-                </div>
-              </template>
-              <template v-else>
-                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-              </template>
-            </div>
-
             <Upload
               ref="upload"
               :show-upload-list="false"
               :data="submitData"
-              :default-file-list="defaultList"
               :on-success="handleSuccess"
               :format="['jpg','jpeg','png']"
               :max-size="2048"
@@ -64,14 +49,11 @@
                 <Icon type="camera" size="20"></Icon>
               </div>
             </Upload>
-            <Modal title="查看图片" v-model="visible">
-              <img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">
-            </Modal>
           </div>
         </FormItem>
 
         <FormItem>
-          <Button type="primary" @click="insert">提交评价</Button>
+          <Button type="primary" @click="insert">添加档口</Button>
           <Button style="margin-left: 8px">重置</Button>
         </FormItem>
       </Form>
@@ -88,22 +70,12 @@ import { mapState } from 'vuex';
 export default {
   data() {
     return {
-
-      defaultList: [
-      ],
       imgName: '',
       visible: false,
-      uploadList: [
-        {
-        'name': 'bc7521e033abdd1e92222d733590f104',
-        'url': 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
-      }
-      ],
-
-      canteenName: '和园',
-      canteenDistrict: '黄焖鸡',
+      canteenName: '秘制小汉堡',
+      canteenDistrict: '1',
       canteenFloor: '1',
-      canteenIntro: '黄焖鸡',
+      canteenIntro: '汉堡王',
       pic_id:0,
 
       submitData: { // 这里是需要携带的数据
@@ -119,10 +91,13 @@ export default {
       this.$router.push({ name: 'home' });
     },
     insert() {
-      // if (!this.$store.state.isLogin){
-      //     alert('您还未登录')
-      //     return
-      // }
+
+      console.log(this.pic_id)
+      if (this.pic_id == 0){
+        this.$Message.info('请添加一张图片');
+        return
+      }
+
       try {
         var self = this;
         var data = Qs.stringify({
@@ -148,13 +123,8 @@ export default {
       this.imgName = name;
       this.visible = true;
     },
-    handleRemove(file) {
-      // 从 upload 实例删除数据
-      const fileList = this.$refs.upload.fileList;
-      this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
-    },
     handleSuccess(res, file) {
-      console.log(res)
+      console.log(res.pic_id)
       this.pic_id = res.pic_id
     },
     handleFormatError(file) {
@@ -170,13 +140,7 @@ export default {
       });
     },
     handleBeforeUpload() {
-      const check = this.uploadList.length < 2;
-      if (!check) {
-        this.$Notice.warning({
-          title: '最多只能上传 1 张图片。'
-        });
-      }
-      return check;
+      return true;
     }
   },
   mounted() {
@@ -186,7 +150,6 @@ export default {
       handler(val) {
         Object.assign(this.$data, this.$options.data());
         this.canteen_id = +val.params.canteen_id;
-        // this.user_id = +val.params.user_id;
       },
       immediate: true,
       deep: true

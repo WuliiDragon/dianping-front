@@ -74,7 +74,7 @@
 
               </div>
               <div v-if="userInfo.permission" class="distance" style="float: right;" onClick="">
-                <Button type="error" shape="circle" icon="ios-trash"></Button>
+                <Button type="error" shape="circle" icon="ios-trash" @click="to_delete_comment(item.comment_id)"></Button>
               </div>
 <!--              <Icon type="heart"></Icon>-->
               <div style="float: right;">
@@ -94,6 +94,7 @@
 <script>
 import { Star, Loading } from '@/components';
 import { mapState } from 'vuex';
+import Qs from 'qs';
 
 export default {
   name: 'Detail',
@@ -113,7 +114,36 @@ export default {
   computed: mapState(['userInfo', 'isLogin']),
 
   methods: {
+    to_delete_comment(comment_id){
+      console.log(comment_id)
+      this.$Modal.confirm({
+        title: '确认对话框标题',
+        content: '确定删除评论信息？',
+        onOk: () => {
 
+          try {
+            var self = this;
+            var data = Qs.stringify({
+              'user_id': self.userInfo.user_id,
+              'comment_id': comment_id,
+            });
+
+            this.$http.post('http://127.0.0.1:5000/comment/deleteComment', data, {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+              }
+            ).then((response) => {
+              this.$router.go(0)
+              console.log(response)
+
+            });
+          } catch (e) {
+          }
+        },
+        onCancel: () => {
+
+        }
+      });
+    },
 
     to_score(){
       this.$router.push({name: 'score', params: {canteen_id: this.canteen_id,user_id:1}})
@@ -127,8 +157,7 @@ export default {
 
           console.log(response)
           this.data =response
-          this.data.canteen_pic = 'http://127.0.0.1:5000/img' + this.data.canteen_pic
-          console.log(this.window_no)
+          this.data.window_comment=this.data.window_comment.reverse()
         });
       } catch (e) {
       }

@@ -43,9 +43,9 @@
 
         <Scroll isBottom  height="800px">
           <li  v-for="(item, index) in post_data.posts_list" :key="index">
-            <div style="height: 35px;      margin: 0 15px;       border-top: 1px solid $bdeee;
-">
-              <div class="username">{{item.post_title}}
+            <div style="height: 35px;      margin: 0 15px;       border-top: 1px solid $bdeee;">
+              <div class="username">
+                {{item.post_title}}
               </div>
             </div>
           </li>
@@ -81,11 +81,11 @@ export default {
   },
   computed: mapState(['userInfo', 'isLogin']),
   activated() {
-    if (this.isFirst) {
+    // if (this.isFirst) {
       this.isFirst = false;
       this.handleFetchData();
       this.handleFetchPostData()
-    }
+    // }
     // 解决搜索回来页面不能滚动bug
     if (this.$refs.scrollRef) {
       this.$refs.scrollRef.handleRefresh();
@@ -119,9 +119,9 @@ export default {
           this.form.list = [...this.form.list, ...response.canteens_list];
           for (let i in this.form.list) {
             let win =  this.form.list[i]
-            win.canteen_pic= 'http://127.0.0.1:5000/img'+win.canteen_pic
             console.log(win)
           }
+          this.form.list=this.form.list.reverse()
 
 
         });

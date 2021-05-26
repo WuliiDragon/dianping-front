@@ -45,6 +45,7 @@
 <script>
 import Star from '@/components/star';
 import { mapState } from 'vuex';
+import Qs from 'qs';
 
 export default {
   name: 'Item',
@@ -75,6 +76,33 @@ export default {
   methods: {
     delete_canteen(canteen_id){
       console.log(canteen_id)
+      this.$Modal.confirm({
+        title: '确认对话框标题',
+        content: '确定删除档口以及相关评论信息？',
+        onOk: () => {
+          try {
+            var self = this;
+            var data = Qs.stringify({
+              'user_id': self.userInfo.user_id,
+              'canteen_id': canteen_id,
+            });
+
+            this.$http.post('http://127.0.0.1:5000/canteen/deleteCanteen', data, {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+              }
+            ).then((response) => {
+              // self.$router.push({ name: 'home' });
+              this.$router.go(0)
+              console.log(response)
+
+            });
+          } catch (e) {
+          }
+        },
+        onCancel: () => {
+
+        }
+      });
     }
 
   },

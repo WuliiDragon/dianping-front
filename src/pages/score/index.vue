@@ -121,7 +121,7 @@ export default {
       visible: false,
       uploadList: [],
 
-      context: '第三次来了',
+      context: '秘制小汉堡，臭豆腐，腐乳，加柠檬，老干妈，既然实惠，还管饱，你看这汉堡做的行不行！',
       score: {
         score_taste: 2,
         score_health: 3,
