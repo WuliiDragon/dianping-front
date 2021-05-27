@@ -65,7 +65,7 @@ export default {
       param.append('user_pic', this.file);
       param.append('user_id', this._user.id);
       this.$http.post('http://localhost:5000/pic/uploadUserPhoto', param).then((response) =>{
-        const { path: avatar } = response;
+        const { pic_route: avatar } = response;
         console.log(response);
         this._user.avatar = avatar;
         this.$store.commit('$handleLogin', { isLogin: 1, userInfo: this._user });

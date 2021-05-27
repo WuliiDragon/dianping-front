@@ -28,6 +28,11 @@ const router = new Router({
       component: () => import('@/pages/score')
     },
     {
+      path: '/coursescore/:user_id:course_id',
+      name: 'coursescore',
+      component: () => import('@/pages/coursescore')
+    },
+    {
       path: '/add/:user_id',
       name: 'add',
       component: () => import('@/pages/add')
@@ -46,6 +51,11 @@ const router = new Router({
       path: '/detail/:canteen_id',
       name: 'detail',
       component: () => import('@/pages/detail')
+    },
+    {
+      path: '/coursedetail/:course_id',
+      name: 'coursedetail',
+      component: () => import('@/pages/coursedetail')
     },
 
     {
