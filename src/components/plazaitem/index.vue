@@ -2,33 +2,31 @@
   <ul class="item-wrap" :class="{padding: isHome}">
 
     <template >
-
-      <li class="item-box" v-for="(item, index) in list" :key="index" @click="$router.push({name: 'coursedetail', params: {course_id: item.course_id}})">
+      <li class="item-box" v-for="(item, index) in list" :key="index" @click="$router.push({name: 'plazadetail', params: {plaza_id: item.plaza_id}})">
         <div class="img-box">
-          <img class="img" :src="item.canteen_pic" :alt="item.name" />
+          <img class="img" :src="item.plaza_pic" :alt="item.name" />
         </div>
 
         <div class="intr-box">
           <div class="top-box">
-            <h3 class="name">{{item.course_name}}</h3>
+            <h3 class="name">{{item.plaza_name}}</h3>
             <div v-if="userInfo.permission" class="distance">
-              <Button type="error" shape="circle" icon="ios-trash" @click.stop="deletecourse(item.course_id)"></Button>
+              <Button type="error" shape="circle" icon="ios-trash" @click.stop="deleteplaza(item.plaza_id)"></Button>
             </div>
           </div>
           <div class="top-box">
 
-            <h3 class="name">{{item.course_school}}</h3>
-            <div class="distance">{{item.course_teacher}} 老师</div>
-            <div class="distance">{{item.course_credit}} 学分</div>
+            <h3 class="name">{{item.plaza_district}}</h3>
+            <div class="distance">{{item.plaza_type}} </div>
+            <div class="distance">{{item.plaza_intro}} </div>
           </div>
 
-          <div class="desc">{{item.decourse_introsc}}</div>
           <div class="bottom-box">
             <div class="price-box">
               <Rate
                 :count="5"
                 disabled
-                v-model="item.course_score.course_score_total" />
+                v-model="item.plaza_score.plaza_score_total" />
             </div>
           </div>
         </div>
@@ -44,7 +42,7 @@ import { mapState } from 'vuex';
 import Qs from "qs";
 
 export default {
-  name: 'CourseItem',
+  name: 'PlazaItem',
   components: { Star },
   props: {
     list: {
@@ -70,7 +68,7 @@ export default {
     console.log(this.userInfo.root);
   },
   methods: {
-    deletecourse(id) {
+    deleteplaza(id) {
       this.$Modal.confirm({
           title: '确认对话框标题',
           content: '确定删除档口以及相关评论信息？',
@@ -78,10 +76,10 @@ export default {
             var self = this;
             var data = Qs.stringify({
               'user_id': self.user_id,
-              'course_id': id
+              'plaza_id': id
             });
             console.log(id);
-            this.$http.post('http://127.0.0.1:5000/course/deleteCourse', data, {
+            this.$http.post('http://127.0.0.1:5000/plaza/deletePlaza', data, {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
               }
             ).then((response) => {
