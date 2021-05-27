@@ -106,6 +106,7 @@
 </template>
 <script>
 import Qs from 'qs'
+import { mapState } from 'vuex';
 
 export default {
   data() {
@@ -153,8 +154,8 @@ export default {
 
         var self = this;
         var data = Qs.stringify({
-          'user_id': 1,
-          'zone_id': self.canteen_id,
+          'user_id': this.userInfo.user_id,
+          'zone_id': this.canteen_id,
           'comment_zone': 1,
           'comment_content': self.context,
           'taste_score': self.score.score_taste,
@@ -224,6 +225,8 @@ export default {
   },
   mounted() {
   },
+  computed: mapState(['userInfo', 'isLogin']),
+
   watch: {
     $route: {
       handler(val) {

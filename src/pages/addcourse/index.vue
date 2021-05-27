@@ -33,7 +33,7 @@
                  placeholder="请输入您的评价"></Input>
         </FormItem>
         <FormItem>
-          <Button type="primary" @click="insert">提交评价</Button>
+          <Button type="primary" @click="insert">提交课程</Button>
           <Button style="margin-left: 8px">重置</Button>
         </FormItem>
       </Form>

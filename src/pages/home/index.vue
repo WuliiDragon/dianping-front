@@ -33,13 +33,13 @@
 
       <TabPane label="自主发帖" name="name2">
 
-        <div v-if="userInfo.permission">
-          <Button type="primary"  @click="to_add" long>+</Button>
+<!--        <div v-if="userInfo.permission">-->
+<!--          <Button type="primary"  @click="to_add" long>+</Button>-->
 
-        </div>
-        <template v-else>
-          <div ></div>
-        </template>
+<!--        </div>-->
+<!--        <template v-else>-->
+<!--          <div ></div>-->
+<!--        </template>-->
 
         <Scroll isBottom  height="800px">
           <li  v-for="(item, index) in post_data.posts_list" :key="index">

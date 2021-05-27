@@ -14,10 +14,13 @@
     <Tabs value="name1"   :animated="false">
       <TabPane label="固定发帖" name="name1"  >
         <div >
-          <Button :size="small"  @click="to_add">
-            <Icon type="ios-arrow-back" />
-            添加
-          </Button>
+          <div v-if="userInfo.permission">
+            <Button type="primary"  @click="to_add" long>添加课程</Button>
+
+          </div>
+          <template v-else>
+            <div ></div>
+          </template>
           <Scroll  :data="form.list"   height="1000px" style="padding-bottom: 100px">
             <CourseItem :list="form.list" isHome></CourseItem>
           </Scroll>
