@@ -2,7 +2,7 @@
 
   <div class="detail-wrap">
     <Header title="商品详情">
-      <Button  :ghost="true" to="/detail">
+      <Button  :ghost="true" to="/course">
         <Icon type="ios-arrow-back" />
         返回
       </Button>
@@ -70,7 +70,7 @@
 
               </div>
               <div v-if="userInfo.permission" class="distance" style="float: right;" onClick="">
-                <Button type="error" shape="circle" icon="ios-trash"></Button>
+                <Button type="error" shape="circle" icon="ios-trash" @click="deletecomment(item.comment_id)"></Button>
               </div>
 <!--              <Icon type="heart"></Icon>-->
               <div style="float: right;">
@@ -89,6 +89,7 @@
 <script>
 import { Star, Loading } from '@/components';
 import { mapState } from 'vuex';
+import Qs from "qs";
 
 export default {
   name: 'Detail',
@@ -108,6 +109,20 @@ export default {
   computed: mapState(['userInfo', 'isLogin']),
 
   methods: {
+    deletecomment(id) {
+      var self = this;
+      var data = Qs.stringify({
+        'user_id': self.user_id,
+        'comment_id': id
+      });
+      console.log(id);
+      this.$http.post('http://127.0.0.1:5000/comment/deleteComment', data, {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+      ).then((response) => {
+        location.reload();
+      });
+    },
 
     to_score() {
       this.$router.push({ name: 'coursescore', params: { course_id: this.course_id, user_id: 1 } });

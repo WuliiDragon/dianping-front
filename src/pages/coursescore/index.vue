@@ -138,8 +138,8 @@ export default {
   },
   methods: {
     back() {
-      console.log(this.post_id);
-      this.$router.push({ name: 'detail', params: { window_no: this.post_id } });
+      console.log(this.course_id);
+      this.$router.push({ name: 'coursedetail', params: { course_id: this.course_id } });
     },
     insert() {
 
@@ -177,7 +177,7 @@ export default {
         }
         ).then((response) => {
           if(response.msg=='评论插入成功'){
-              self.$router.push({ name: 'detail', params: { canteen_id: self.canteen_id } });
+              self.$router.push({ name: 'coursedetail', params: { course_id: self.course_id } });
           }
 
 
