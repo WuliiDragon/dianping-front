@@ -23,9 +23,9 @@
 
           <div class="intr-box">
             <h2 class="name">{{data.plaza_name}}</h2>
-            <span class="text">{{data.plaza_district+'区'}}</span>
-            <span class="text">{{data.plaza_intro+'层'}}</span>
-            <span class="text">{{data.plaza_type+'层'}}</span>
+            <span class="text">{{data.plaza_district+' '}}</span>
+            <span class="text">{{data.plaza_intro+' '}}</span>
+            <span class="text">{{data.plaza_type+' '}}</span>
             <div class="score-box">
               <span class="text">{{'味道: '  +data.plaza_score.environment_score_average}}</span>
               <span class="text">{{'满意度: '+data.plaza_score.money_score_average}}</span>

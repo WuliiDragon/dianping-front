@@ -4,9 +4,7 @@
     <template >
 
       <li class="item-box" v-for="(item, index) in list" :key="index" @click="$router.push({name: 'coursedetail', params: {course_id: item.course_id}})">
-        <div class="img-box">
-          <img class="img" :src="item.canteen_pic" :alt="item.name" />
-        </div>
+
 
         <div class="intr-box">
           <div class="top-box">

@@ -18,29 +18,29 @@
                  placeholder="请输入您的评价"></Input>
         </FormItem>
 
-        <FormItem label="academic">
+        <FormItem label="学术">
           <Rate v-model="score.academic_score"/>
         </FormItem>
 
-        <FormItem label="burden">
+        <FormItem label="负担">
           <Rate v-model="score.burden_score"/>
         </FormItem>
 
 
-        <FormItem label="difficulty">
+        <FormItem label="难度">
           <Rate v-model="score.difficulty_score"/>
         </FormItem>
 
 
-        <FormItem label="fun">
+        <FormItem label="趣味">
           <Rate v-model="score.fun_score"/>
         </FormItem>
 
-        <FormItem label="popularity">
+        <FormItem label="流行">
           <Rate v-model="score.popularity_score"/>
         </FormItem>
 
-        <FormItem label="practicality">
+        <FormItem label="实用">
           <Rate v-model="score.practicality_score"/>
         </FormItem>
 

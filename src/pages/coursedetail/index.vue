@@ -27,13 +27,13 @@
             <span class="text">{{data.course_teacher+'老师 '}}</span>
             <span class="text">{{data.course_credit+'学分 '}}</span>
             <div class="score-box">
-              <span class="text">{{'academic: '  +data.course_score.academic_score_average}}</span>
-              <span class="text">{{'burden: '+data.course_score.burden_score_average}}</span>
-              <span class="text">{{'course: '  +data.course_score.course_score_total}}</span>
-              <span class="text">{{'difficulty: '  +data.course_score.difficulty_score_average}}</span>
-              <span class="text">{{'fun: '  +data.course_score.fun_score_average}}</span>
-              <span class="text">{{'popularity: '  +data.course_score.popularity_score_average}}</span>
-              <span class="text">{{'practicality: '  +data.course_score.practicality_score_average}}</span>
+              <span class="text">{{'学术: '  +data.course_score.academic_score_average}}</span>
+              <span class="text">{{'负担: '+data.course_score.burden_score_average}}</span>
+              <span class="text">{{'课程: '  +data.course_score.course_score_total}}</span>
+              <span class="text">{{'难度: '  +data.course_score.difficulty_score_average}}</span>
+              <span class="text">{{'趣味: '  +data.course_score.fun_score_average}}</span>
+              <span class="text">{{'流行: '  +data.course_score.popularity_score_average}}</span>
+              <span class="text">{{'实用: '  +data.course_score.practicality_score_average}}</span>
             </div>
 
           </div>
