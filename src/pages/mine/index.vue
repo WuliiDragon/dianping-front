@@ -4,7 +4,7 @@
     <scroll isBottom :data="[_user]">
       <div class="user-box">
         <div class="avatar-box">
-          <img class="avatar" :src="_user.avatar" alt="头像" />
+          <img class="avatar" :src="_user.user_pic" alt="头像" />
         </div>
         <div class="name">{{_user.name}}</div>
         <div>
@@ -21,7 +21,7 @@
         <div class="btn-logout" @click="handleLogout">退出</div>
       </div>
     </scroll>
-    <div class="manager" v-if="this._user.root=='1'">
+    <div class="manager" v-if="this._user.permission=='1'">
       <Button icon="ios-cloud-upload-outline" @click="$router.push('home')">
         管理员
       </Button>
@@ -60,14 +60,15 @@ export default {
       return false;
     },
     async upload() {
+      console.log(this._user.user_id)
       this.loadingStatus = true;
       var param = new FormData();
       param.append('user_pic', this.file);
-      param.append('user_id', this._user.id);
+      param.append('user_id', this._user.user_id);
       this.$http.post('http://localhost:5000/pic/uploadUserPhoto', param).then((response) =>{
         const { pic_route: avatar } = response;
         console.log(response);
-        this._user.avatar = avatar;
+        this._user.user_pic = avatar;
         this.$store.commit('$handleLogin', { isLogin: 1, userInfo: this._user });
         console.log(this._user);
       });

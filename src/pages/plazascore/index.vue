@@ -18,31 +18,25 @@
                  placeholder="请输入您的评价"></Input>
         </FormItem>
 
-        <FormItem label="学术">
-          <Rate v-model="score.academic_score"/>
+        <FormItem label="服务">
+          <Rate v-model="score.service_score"/>
         </FormItem>
 
-        <FormItem label="负担">
-          <Rate v-model="score.burden_score"/>
-        </FormItem>
-
-
-        <FormItem label="难度">
-          <Rate v-model="score.difficulty_score"/>
+        <FormItem label="环境">
+          <Rate v-model="score.environment_score"/>
         </FormItem>
 
 
-        <FormItem label="趣味">
-          <Rate v-model="score.fun_score"/>
+        <FormItem label="价格">
+          <Rate v-model="score.money_score"/>
         </FormItem>
+
 
         <FormItem label="流行">
           <Rate v-model="score.popularity_score"/>
         </FormItem>
 
-        <FormItem label="实用">
-          <Rate v-model="score.practicality_score"/>
-        </FormItem>
+
 
         <FormItem label="图片">
 
@@ -118,7 +112,7 @@ export default {
     return {
       submitData: { // 这里是需要携带的数据
         srcLanguage: "en",
-        zone_id:'1',
+        zone_id:'4',
         pic_zone:'2'
       },
 
@@ -127,19 +121,17 @@ export default {
       uploadList: [],
       context: '第三次来了',
       score: {
-        academic_score: 2,
-        fun_score: 3,
-        practicality_score: 4,
-        difficulty_score: 1,
-        burden_score: 2,
-        popularity_score: 2
+        service_score: 2,
+        environment_score: 3,
+        money_score: 4,
+        popularity_score: 1,
       }
     };
   },
   methods: {
     back() {
       console.log(this.course_id);
-      this.$router.push({ name: 'coursedetail', params: { course_id: this.course_id } });
+      this.$router.push({ name: 'plazadetail', params: { plaza_id: this.plaza_id } });
     },
     insert() {
 
@@ -159,14 +151,12 @@ export default {
         var self = this;
         var data = Qs.stringify({
           'user_id': self.user_id,
-          'zone_id': self.course_id,
-          'comment_zone': 2,
+          'zone_id': self.plaza_id,
+          'comment_zone': 4,
           'comment_content': self.context,
-          'academic_score': self.score.academic_score,
-          'fun_score': self.score.fun_score,
-          'practicality_score': self.score.practicality_score,
-          'difficulty_score': self.score.difficulty_score,
-          'burden_score': self.score.burden_score,
+          'service_score': self.score.service_score,
+          'environment_score': self.score.environment_score,
+          'money_score': self.score.money_score,
           'popularity_score': self.score.popularity_score,
           'pic_list': pic_ids
         })
@@ -177,7 +167,7 @@ export default {
         }
         ).then((response) => {
           if(response.msg=='评论插入成功'){
-              self.$router.push({ name: 'coursedetail', params: { course_id: self.course_id } });
+              self.$router.push({ name: 'plazadetail', params: { plaza_id: self.plaza_id } });
           }
 
 
@@ -234,7 +224,7 @@ export default {
     $route: {
       handler(val) {
         Object.assign(this.$data, this.$options.data());
-        this.course_id = +val.params.course_id;
+        this.plaza_id = +val.params.plaza_id;
         this.user_id = +val.params.user_id;
       },
       immediate: true,

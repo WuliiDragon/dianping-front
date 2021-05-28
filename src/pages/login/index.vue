@@ -98,7 +98,7 @@ export default {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
           }
         ).then((response) => {
-          console.log(response)
+          console.log(response);
 
           if(response.msg=='登陆成功'){
 

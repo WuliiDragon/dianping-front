@@ -2,7 +2,7 @@
 
   <div class="detail-wrap">
     <Header title="商品详情">
-      <Button  :ghost="true" to="/course">
+      <Button  :ghost="true" to="/detail">
         <Icon type="ios-arrow-back" />
         返回
       </Button>
@@ -18,22 +18,20 @@
       <Scroll :data="[data]" isBottom  height="800px">
         <div class="goods-box">
           <div class="img-box">
-            <img class="img" :src="data.course_pic" />
+            <img class="img" :src="data.plaza_pic" />
           </div>
 
           <div class="intr-box">
-            <h2 class="name">{{data.course_name}}</h2>
-            <span class="text">{{data.course_school+' '}}</span>
-            <span class="text">{{data.course_teacher+'老师 '}}</span>
-            <span class="text">{{data.course_credit+'学分 '}}</span>
+            <h2 class="name">{{data.plaza_name}}</h2>
+            <span class="text">{{data.plaza_district+' '}}</span>
+            <span class="text">{{data.plaza_intro+' '}}</span>
+            <span class="text">{{data.plaza_type+' '}}</span>
             <div class="score-box">
-              <span class="text">{{'学术: '  +data.course_score.academic_score_average}}</span>
-              <span class="text">{{'负担: '+data.course_score.burden_score_average}}</span>
-              <span class="text">{{'课程: '  +data.course_score.course_score_total}}</span>
-              <span class="text">{{'难度: '  +data.course_score.difficulty_score_average}}</span>
-              <span class="text">{{'趣味: '  +data.course_score.fun_score_average}}</span>
-              <span class="text">{{'流行: '  +data.course_score.popularity_score_average}}</span>
-              <span class="text">{{'实用: '  +data.course_score.practicality_score_average}}</span>
+              <span class="text">{{'味道: '  +data.plaza_score.environment_score_average}}</span>
+              <span class="text">{{'满意度: '+data.plaza_score.money_score_average}}</span>
+              <span class="text">{{'价格: '  +data.plaza_score.plaza_score_total}}</span>
+              <span class="text">{{'卫生: '  +data.plaza_score.popularity_score_average}}</span>
+              <span class="text">{{'服务: '  +data.plaza_score.service_score_average}}</span>
             </div>
 
           </div>
@@ -47,11 +45,12 @@
 
         <!-- 商品评论 -->
         <ul class="comments-list">
-          <li class="title-box" v-if="data.course_comment.length">
-            <span class="title">{{'师生点评 '+ data.course_comment.length +'条'}}</span>
+          <li class="title-box" v-if="data.plaza_comment.length">
+            <span class="title">{{'师生点评 '+ data.plaza_comment.length +'条'}}</span>
           </li>
-          <li class="no-comments" v-else>此课程暂无评论</li>
-          <li class="item-box" v-for="(item, index) in data.course_comment" :key="index">
+          <li class="no-comments" v-else>此商场暂无评论</li>
+
+          <li class="item-box" v-for="(item, index) in data.plaza_comment" :key="index">
             <div class="avatar-box">
               <img class="avatar" :src="item.avatar" :alt="item.name" />
             </div>
@@ -70,7 +69,7 @@
 
               </div>
               <div v-if="userInfo.permission" class="distance" style="float: right;" onClick="">
-                <Button type="error" shape="circle" icon="ios-trash" @click="deletecomment(item.comment_id)"></Button>
+                <Button type="error" shape="circle" icon="ios-trash" @click="to_delete_comment(item.comment_id)"></Button>
               </div>
 <!--              <Icon type="heart"></Icon>-->
               <div style="float: right;">
@@ -89,7 +88,7 @@
 <script>
 import { Star, Loading } from '@/components';
 import { mapState } from 'vuex';
-import Qs from "qs";
+import Qs from 'qs';
 
 export default {
   name: 'Detail',
@@ -109,43 +108,46 @@ export default {
   computed: mapState(['userInfo', 'isLogin']),
 
   methods: {
-    deletecomment(id) {
+    to_delete_comment(comment_id) {
+      console.log(comment_id);
       this.$Modal.confirm({
-          title: '确认对话框标题',
-          content: '确定删除评论信息？',
-          onOk: () => {
+        title: '确认对话框标题',
+        content: '确定删除评论信息？',
+        onOk: () => {
+          try {
             var self = this;
             var data = Qs.stringify({
-              'user_id': self.user_id,
-              'comment_id': id
+              'user_id': self.userInfo.user_id,
+              'comment_id': comment_id
             });
-            console.log(id);
+
             this.$http.post('http://127.0.0.1:5000/comment/deleteComment', data, {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
               }
             ).then((response) => {
-              location.reload();
+              this.$router.go(0);
+              console.log(response);
             });
-          },
+          } catch (e) {
+          }
+        },
         onCancel: () => {
 
         }
       });
-
     },
 
     to_score() {
-      this.$router.push({ name: 'coursescore', params: { course_id: this.course_id, user_id: this.userInfo.user_id } });
+      console.log(this.userInfo);
+      this.$router.push({ name: 'plazascore', params: { plaza_id: this.plaza_id, user_id: this.userInfo.user_id } });
     },
 
     async handleFetchData() {
-      console.log(this.userInfo.permission);
       try {
-        this.$http.get('http://127.0.0.1:5000/course/' + this.course_id).then((response) => {
+        this.$http.get('http://127.0.0.1:5000/plaza/' + this.plaza_id).then((response) => {
           console.log(response);
           this.data = response;
-          this.data.course_pic = 'http://127.0.0.1:5000/img' + this.data.course_pic;
-          console.log(this.window_no);
+          this.data.window_comment = this.data.window_comment.reverse();
         });
       } catch (e) {
       }
@@ -156,8 +158,8 @@ export default {
       handler(val) {
         Object.assign(this.$data, this.$options.data());
         // +的作用是隐式转化
-        this.course_id = +val.params.course_id;
-        console.log(this.course_id);
+        this.plaza_id = +val.params.plaza_id;
+        console.log(this.plaza_id);
         this.handleFetchData();
       },
       immediate: true,

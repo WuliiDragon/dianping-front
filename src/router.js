@@ -28,6 +28,11 @@ const router = new Router({
       component: () => import('@/pages/score')
     },
     {
+      path: '/plazascore/:user_id:plaza_id',
+      name: 'plazascore',
+      component: () => import('@/pages/plazascore')
+    },
+    {
       path: '/coursescore/:user_id:course_id',
       name: 'coursescore',
       component: () => import('@/pages/coursescore')
@@ -53,6 +58,11 @@ const router = new Router({
       component: () => import('@/pages/detail')
     },
     {
+      path: '/plazadetail/:plaza_id',
+      name: 'plazadetail',
+      component: () => import('@/pages/plazadetail')
+    },
+    {
       path: '/coursedetail/:course_id',
       name: 'coursedetail',
       component: () => import('@/pages/coursedetail')
@@ -67,13 +77,22 @@ const router = new Router({
     {
       path: '/course',
       name: 'course',
-      meta: { auth: true },
       component: () => import('@/pages/course')
     },
     {
       path: '/addcourse/:user_id',
       name: 'addcourse',
       component: () => import('@/pages/addcourse')
+    },
+    {
+      path: '/plaza',
+      name: 'plaza',
+      component: () => import('@/pages/plaza')
+    },
+    {
+      path: '/addplaza/:user_id',
+      name: 'addplaza',
+      component: () => import('@/pages/addplaza')
     },
     {
       path: '*',
