@@ -100,7 +100,7 @@ export default {
       try {
         this.$http.get('http://127.0.0.1:5000/post/getPostsList').then((response) => {
           this.post_data = response
-          console.log(this.post_data)
+          // console.log(this.post_data)
 
 
         });
@@ -113,13 +113,13 @@ export default {
 
       try {
         this.$http.get('http://127.0.0.1:5000/canteen/getCanteensList').then((response) => {
-          console.log(response)
+          // console.log(response)
 
 
           this.form.list = [...this.form.list, ...response.canteens_list];
           for (let i in this.form.list) {
             let win =  this.form.list[i]
-            console.log(win)
+            // console.log(win)
           }
           this.form.list=this.form.list.reverse()
 

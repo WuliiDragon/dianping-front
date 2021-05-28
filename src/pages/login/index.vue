@@ -101,6 +101,7 @@ export default {
           console.log(response)
 
           if(response.msg=='登陆成功'){
+
             this.$store.commit('$handleLogin', { isLogin: 1, userInfo: response });
             this.$router.replace({ path: '/' });
 

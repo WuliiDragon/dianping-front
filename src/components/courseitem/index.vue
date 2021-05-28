@@ -67,7 +67,7 @@ export default {
     }
   },
   activated() {
-    console.log(this.userInfo.root);
+    // console.log(this.userInfo.root);
   },
   methods: {
     deletecourse(id) {
@@ -76,7 +76,7 @@ export default {
         'user_id': self.user_id,
         'course_id': id
       });
-      console.log(id);
+      // console.log(id);
       this.$http.post('http://127.0.0.1:5000/course/deleteCourse', data, {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }
