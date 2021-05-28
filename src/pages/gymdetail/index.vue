@@ -2,38 +2,32 @@
 
   <div class="detail-wrap">
     <Header title="商品详情">
-      <Button :ghost="true" to="/detail">
+      <Button :ghost="true" to="/gymdetail">
         <Icon type="ios-arrow-back"/>
         返回
       </Button>
     </Header>
 
-    <!--    <template v-if="isAjax">-->
-    <!--      <div class="loading-box">加载中...</div>-->
-    <!--      <Loading></Loading>-->
-
-    <!--    </template>-->
 
     <template>
       <Scroll :data="[data]" isBottom height="800px">
         <div class="goods-box">
           <div class="img-box">
-            <img class="img" :src="data.canteen_pic"/>
+            <img class="img" :src="data.gym_pic"/>
           </div>
 
 
           <div class="intr-box">
-            <h2 class="name">{{ data.canteen_name }}</h2>
-            <span class="text">{{ data.canteen_district + '区' }}</span>
-            <span class="text">{{ data.canteen_floor + '层' }}</span>
-            <div class="score-box">
-              <span class="text">{{ '总分: ' + data.canteen_score.canteen_score_total }}</span>
-              <span class="text">{{ '满意度: ' + data.canteen_score.fullness_score_average }}</span>
-              <span class="text">{{ '价格: ' + data.canteen_score.money_score_average }}</span>
-              <span class="text">{{ '卫生: ' + data.canteen_score.health_score_average }}</span>
-              <span class="text">{{ '卫生: ' + data.canteen_score.taste_score_average }}</span>
-              <span class="text">{{ '服务: ' + data.canteen_score.service_score_average }}</span>
-            </div>
+            <h2 class="name">{{ data.gym_name }}</h2>
+            <span class="text">{{ data.gym_type }}</span>
+            <span class="text">{{ data.gym_intro }}</span>
+<!--            <div class="score-box">-->
+<!--              <span class="text">{{ '味道: ' + data.canteen_score.taste_score_average }}</span>-->
+<!--              <span class="text">{{ '满意度: ' + data.canteen_score.fullness_score_average }}</span>-->
+<!--              <span class="text">{{ '价格: ' + data.canteen_score.money_score_average }}</span>-->
+<!--              <span class="text">{{ '卫生: ' + data.canteen_score.health_score_average }}</span>-->
+<!--              <span class="text">{{ '服务: ' + data.canteen_score.service_score_average }}</span>-->
+<!--            </div>-->
 
 
           </div>
@@ -42,17 +36,15 @@
                     @click="to_score">
 
             </Button>
-            <!--            <Button icon="ios-heart"></Button>-->
           </div>
         </div>
 
 
-        <!-- 商品评论 -->
         <ul class="comments-list">
-          <li class="title-box" v-if="data.canteen_comment.length">
-            <span class="title">{{ '师生点评 ' + data.canteen_comment.length + '条' }}</span>
+          <li class="title-box" v-if="data.gym_comment.length">
+            <span class="title">{{ '师生点评 ' + data.gym_comment.length + '条' }}</span>
           </li>
-          <li class="no-comments" v-else>此档口暂无评论</li>
+          <li class="no-comments" v-else>暂无评论</li>
 
           <li class="item-box" v-for="(item, index) in data.canteen_comment" :key="index">
             <div class="avatar-box">
@@ -64,10 +56,10 @@
               </div>
 
 
-              <p class="text">{{ item.comment_content }}</p>
-              <div class="pic-bar" v-if="item.comment_pic.length">
+              <p class="text">{{ item.gym_comment }}</p>
+              <div class="pic-bar" v-if="item.gym_comment.length">
                 <ul class="pic-list">
-                  <li class="pic-box" v-for="(_item, _index) in item.comment_pic" :key="_index">
+                  <li class="pic-box" v-for="(_item, _index) in item.gym_comment" :key="_index">
                     <img class="pic" :src="_item" alt/>
                   </li>
                 </ul>
@@ -77,19 +69,9 @@
                 <Button type="error" shape="circle" icon="ios-trash"
                         @click="to_delete_comment(item.comment_id)"></Button>
               </div>
-
-              <div v-if="flags">
-
-              </div>
-              <div v-else>
-
-              </div>
-
-              <div style="float: right;" >
-                <Icon type="arrow-right-a"></Icon>
-
-                <Button  v-show="!item.click_like" type="text" icon="ios-heart" @click="to_like(item.comment_id,index)">{{ item.comment_like }}</Button>
-                <Button  v-show="item.click_like"  type="error"    @click="to_like(item.comment_id,index)">{{ item.comment_like }}</Button>
+              <!--              <Icon type="heart"></Icon>-->
+              <div style="float: right;">
+                <Button type="text" icon="ios-heart" @click="to_like(item.comment_id,index)">{{ item.comment_like }}</Button>
               </div>
 
 
@@ -99,7 +81,6 @@
       </Scroll>
 
     </template>
-
   </div>
 </template>
 
@@ -114,14 +95,12 @@ export default {
   data() {
     return {
       id: 0,
-      flags:true,
       goods: {
         store: {},
         comments: []
       },
-      comment_click:[],
       data: {
-        canteen_comment: []
+        gym_comment: []
       },
     };
   },
@@ -145,7 +124,7 @@ export default {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
               }
             ).then((response) => {
-              this.$router.go(0);
+              // this.$router.go(0);
               console.log(response);
 
             });
@@ -158,50 +137,28 @@ export default {
       });
     },
     to_like(comment_id,index) {
+
+      console.log(index,comment_id)
       var self = this;
-      this.data.canteen_comment[index].click_like = !this.data.canteen_comment[index].click_like
-      // console.log(this.data.canteen_comment[index].click_like)
-      this.flags = !this.flags
+      var data = Qs.stringify({
+        'user_id': self.userInfo.user_id,
+        'comment_id': comment_id,
+      });
 
+      this.$http.post('http://127.0.0.1:5000/comment/like', data, {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+      ).then((response) => {
+        self.data.canteen_comment[index].comment_like = response.comment_like
 
-      if (this.data.canteen_comment[index].click_like){
-        var data = Qs.stringify({
-          'user_id': self.userInfo.user_id,
-          'comment_id': comment_id,
-        });
-
-        this.$http.post('http://127.0.0.1:5000/comment/like', data, {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-          }
-        ).then((response) => {
-          self.data.canteen_comment[index].comment_like = response.comment_like
-          console.log(response);
-        });
-
-      }else{
-
-        var data = Qs.stringify({
-          'user_id': self.userInfo.user_id,
-          'comment_id': comment_id,
-        });
-
-        this.$http.post('http://127.0.0.1:5000/comment/dislike', data, {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-          }
-        ).then((response) => {
-          self.data.canteen_comment[index].comment_like = response.comment_like
-          console.log(response);
-        });
-
-      }
-
-
+        console.log(response);
+      });
 
     },
     to_score() {
-      // console.log(this.userInfo)
+      console.log(this.gym_id)
       if (this.isLogin) {
-        this.$router.push({ name: 'score', params: { canteen_id: this.canteen_id, user_id: 1 } });
+        this.$router.push({ name: 'gymscore', params: { gym_id: this.gym_id } });
       } else {
         this.$Message.success('登录才能提交评论');
       }
@@ -209,18 +166,13 @@ export default {
     },
 
     async handleFetchData() {
-      var self = this;
 
       try {
-        this.$http.get('http://127.0.0.1:5000/canteen/' + this.canteen_id).then((response) => {
+        this.$http.get('http://127.0.0.1:5000/gym/' + this.gym_id).then((response) => {
 
+          console.log(response);
           this.data = response;
-
-          for (let i = 0; i < response.canteen_comment.length; i++) {
-            this.data.canteen_comment[i].click_like=false;
-          }
-
-
+          this.data.gym_comment = this.data.gym_comment.reverse();
         });
       } catch (e) {
       }
@@ -237,8 +189,7 @@ export default {
       handler(val) {
         Object.assign(this.$data, this.$options.data());
         // +的作用是隐式转化
-        this.canteen_id = +val.params.canteen_id;
-        console.log(this.canteen_id);
+        this.gym_id = +val.params.gym_id;
         this.handleFetchData();
       },
       immediate: true,

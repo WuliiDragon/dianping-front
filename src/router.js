@@ -90,9 +90,29 @@ const router = new Router({
       component: () => import('@/pages/plaza')
     },
     {
+      path: '/gym',
+      name: 'gym',
+      component: () => import('@/pages/gym')
+    },
+    {
       path: '/addplaza/:user_id',
       name: 'addplaza',
       component: () => import('@/pages/addplaza')
+    },
+    {
+      path: '/addgym/:user_id',
+      name: 'addgym',
+      component: () => import('@/pages/addgym')
+    },
+    {
+      path: '/gymdetail/:gym_id',
+      name: 'gymdetail',
+      component: () => import('@/pages/gymdetail')
+    },
+    {
+      path: '/gymscore/:gym_id',
+      name: 'gymscore',
+      component: () => import('@/pages/scoregym')
     },
     {
       path: '*',

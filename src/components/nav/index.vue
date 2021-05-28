@@ -21,10 +21,10 @@ export default {
   data() {
     return {
       nav: [
-
         { url: '/home', text: '食堂', icon: 'md-beer' },
         { url: '/course', text: '课程', icon: 'icon-home' },
         { url: '/plaza', text: '商店', icon: 'md-beer' },
+        { url: '/gym', text: '体育场', icon: 'md-beer' },
         { url: '/mine', text: '我的', icon: 'icon-mine' }
       ]
     };
