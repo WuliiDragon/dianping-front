@@ -192,14 +192,9 @@ export default {
           self.data.canteen_comment[index].comment_like = response.comment_like
           console.log(response);
         });
-
       }
-
-
-
     },
     to_score() {
-      // console.log(this.userInfo)
       if (this.isLogin) {
         this.$router.push({ name: 'score', params: { canteen_id: this.canteen_id, user_id: 1 } });
       } else {
@@ -213,14 +208,10 @@ export default {
 
       try {
         this.$http.get('http://127.0.0.1:5000/canteen/' + this.canteen_id).then((response) => {
-
           this.data = response;
-
           for (let i = 0; i < response.canteen_comment.length; i++) {
             this.data.canteen_comment[i].click_like=false;
           }
-
-
         });
       } catch (e) {
       }

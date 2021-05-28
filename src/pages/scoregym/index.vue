@@ -14,7 +14,7 @@
 
 
         <FormItem label="评价">
-          <Input v-model="context" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
+          <Input v-model="comment_content" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
                  placeholder="请输入您的评价"></Input>
         </FormItem>
 
@@ -83,8 +83,6 @@
 
 
 
-
-
         <FormItem>
           <Button type="primary" @click="insert">提交评价</Button>
           <Button style="margin-left: 8px">重置</Button>
@@ -112,14 +110,14 @@ export default {
     return {
       submitData: { // 这里是需要携带的数据
         zone_id:this.gym_id,
-        pic_zone:'4'
+        pic_zone:'2'
       },
 
       imgName: '',
       visible: false,
       uploadList: [],
 
-      context: '这网球场太猛了！',
+      comment_content: '这网球场太猛了！',
       score: {
         equipment_score: 2,
         environment_score: 3,
@@ -135,10 +133,7 @@ export default {
     },
     insert() {
 
-      // if (!this.$store.state.isLogin){
-      //     alert('您还未登录')
-      //     return
-      // }
+
       try {
         var pic_ids=""
 
@@ -151,14 +146,13 @@ export default {
         var self = this;
         var data = Qs.stringify({
           'user_id': this.userInfo.user_id,
-          'zone_id': this.canteen_id,
-          'comment_zone': 1,
-          'comment_content': self.context,
-          'taste_score': self.score.score_taste,
-          'health_score': self.score.score_health,
-          'money_score': self.score.score_money,
-          'service_score': self.score.score_service,
-          'fullness_score': self.score.score_fullness,
+          'zone_id': this.gym_id,
+          'comment_zone': 3,
+          'comment_content':this.comment_content,
+          'equipment_score':this.score.equipment_score,
+          'environment_score':this.score.environment_score,
+          'health_score':this.score.health_score,
+          'popularity_score':this.score.popularity_score,
           'pic_list':pic_ids
         })
 
@@ -168,7 +162,7 @@ export default {
         }
         ).then((response) => {
           if(response.msg=='评论插入成功'){
-              self.$router.push({ name: 'detail', params: { canteen_id: self.canteen_id } });
+              self.$router.push({ name: 'gymdetail', params: { this: self.gym_id } });
           }
 
 
