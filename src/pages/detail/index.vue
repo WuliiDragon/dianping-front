@@ -56,7 +56,7 @@
 
           <li class="item-box" v-for="(item, index) in data.canteen_comment" :key="index">
             <div class="avatar-box">
-              <img class="avatar" :src="item.avatar" :alt="item.name"/>
+              <img class="avatar" :src="item.comment_userpic" :alt="item.name"/>
             </div>
             <div class="content-box">
               <div class="username">{{ item.comment_username }}</div>

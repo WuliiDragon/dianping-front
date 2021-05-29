@@ -52,7 +52,7 @@
 
           <li class="item-box" v-for="(item, index) in data.plaza_comment" :key="index">
             <div class="avatar-box">
-              <img class="avatar" :src="item.avatar" :alt="item.name" />
+              <img class="avatar" :src="item.comment_userpic" :alt="item.name" />
             </div>
             <div class="content-box">
               <div class="username">{{item.comment_username}}</div>
@@ -73,7 +73,10 @@
               </div>
 <!--              <Icon type="heart"></Icon>-->
               <div style="float: right;">
-                <Button type="text" icon="ios-heart" onClick="">{{item.comment_like}}</Button>
+                <Icon type="arrow-right-a"></Icon>
+
+                <Button  v-show="!item.click_like" type="text" icon="ios-heart" @click="to_like(item.comment_id,index)">{{ item.comment_like }}</Button>
+                <Button  v-show="item.click_like"  type="error"    @click="to_like(item.comment_id,index)">{{ item.comment_like }}</Button>
               </div>
 
             </div>
@@ -101,13 +104,54 @@ export default {
         comments: []
       },
       data: {
-        window_comment: []
+        plaza_comment: []
       }
     };
   },
   computed: mapState(['userInfo', 'isLogin']),
 
   methods: {
+    to_like(comment_id,index) {
+      var self = this;
+      this.data.plaza_comment[index].click_like = !this.data.plaza_comment[index].click_like
+      // console.log(this.data.canteen_comment[index].click_like)
+      this.flags = !this.flags
+
+
+      if (this.data.plaza_comment[index].click_like){
+        var data = Qs.stringify({
+          'user_id': self.userInfo.user_id,
+          'comment_id': comment_id,
+        });
+
+        this.$http.post('http://127.0.0.1:5000/comment/like', data, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          }
+        ).then((response) => {
+          self.data.plaza_comment[index].comment_like = response.comment_like
+          console.log(response);
+        });
+
+      }else{
+
+        var data = Qs.stringify({
+          'user_id': self.userInfo.user_id,
+          'comment_id': comment_id,
+        });
+
+        this.$http.post('http://127.0.0.1:5000/comment/dislike', data, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          }
+        ).then((response) => {
+          self.data.plaza_comment[index].comment_like = response.comment_like
+          console.log(response);
+        });
+
+      }
+
+
+
+    },
     to_delete_comment(comment_id) {
       console.log(comment_id);
       this.$Modal.confirm({
