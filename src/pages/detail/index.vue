@@ -56,13 +56,46 @@
 
           <li class="item-box" v-for="(item, index) in data.canteen_comment" :key="index">
             <div class="avatar-box">
-              <img class="avatar" :src="item.avatar" :alt="item.name"/>
+              <img class="avatar" :src="item.comment_userpic" :alt="item.name"/>
             </div>
             <div class="content-box">
               <div class="username">{{ item.comment_username }}</div>
-              <div class="score-box">
+
+
+              <div >
+                <Row>
+                  <Rate disabled show-text  size="small" allow-half="true" v-model="item.service_score" :count=10>
+                    <span style="color: #f5a623">{{ item.service_score }} 分</span>
+                  </Rate>
+                </Row>
+                <Row>
+                  <Rate disabled show-text  allow-half="true" v-model="item.health_score" :count=10>
+                    <span style="color: #f5a623">{{ item.health_score }} 分</span>
+                  </Rate>
+                </Row>
+
+                <Row>
+                  <Rate disabled show-text  allow-half="true" v-model="item.fullness_score" :count=10>
+                    <span style="color: #f5a623">{{ item.fullness_score }} 分</span>
+                  </Rate>
+                </Row>
+
+                <Row>
+                  <Rate disabled show-text  allow-half="true" v-model="item.money_score" :count=10>
+                    <span style="color: #f5a623">{{ item.money_score }} 分</span>
+                  </Rate>
+                </Row>
+
+                  <Row>
+                    <Rate disabled show-text  allow-half="true" v-model="item.taste_score" :count=10>
+                      <span style="color: #f5a623">{{ item.taste_score }} 分</span>
+                    </Rate>
+                  </Row>
               </div>
 
+
+
+              <p class="text">{{ item.comment_time }}</p>
 
               <p class="text">{{ item.comment_content }}</p>
               <div class="pic-bar" v-if="item.comment_pic.length">
@@ -200,7 +233,6 @@ export default {
       } else {
         this.$Message.success('登录才能提交评论');
       }
-
     },
 
     async handleFetchData() {
@@ -212,6 +244,7 @@ export default {
           for (let i = 0; i < response.canteen_comment.length; i++) {
             this.data.canteen_comment[i].click_like=false;
           }
+          console.log( this.data )
         });
       } catch (e) {
       }
@@ -288,6 +321,7 @@ export default {
       }
 
       .score-box {
+
         .text {
           margin: 0 5px 0 0;
         }
