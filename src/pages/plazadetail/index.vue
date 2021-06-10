@@ -2,7 +2,7 @@
 
   <div class="detail-wrap">
     <Header title="商品详情">
-      <Button  :ghost="true" to="/detail">
+      <Button  :ghost="true" to="/plaza">
         <Icon type="ios-arrow-back" />
         返回
       </Button>

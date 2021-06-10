@@ -84,7 +84,8 @@ export default {
     // if (this.isFirst) {
       this.isFirst = false;
       this.handleFetchData();
-      this.handleFetchPostData()
+      this.handleFetchPostData();
+      this.handleFetchBullet();
     // }
     // 解决搜索回来页面不能滚动bug
     if (this.$refs.scrollRef) {
@@ -100,14 +101,19 @@ export default {
       try {
         this.$http.get('http://127.0.0.1:5000/post/getPostsList').then((response) => {
           this.post_data = response
-          // console.log(this.post_data)
-
-
         });
       } catch (e) {
       }
     },
-
+    async handleFetchBullet() {
+      try {
+        this.$http.get('http://127.0.0.1:5000/bulletin/getBulletinsList').then((response) => {
+          this.form.keyword = response.bulletins_list[0].bulletin_title;
+          console.log(this.form);
+        });
+      } catch (e) {
+      }
+    },
 
     async handleFetchData() {
 
