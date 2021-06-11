@@ -6,7 +6,7 @@
         <div class="avatar-box">
           <img class="avatar" :src="_user.user_pic" alt="头像" />
         </div>
-        <div class="name">{{_user.name}}</div>
+        <div class="name">{{_user.user_name}}</div>
         <div>
           <Upload
             :before-upload="handleUpload"

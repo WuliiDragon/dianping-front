@@ -1,8 +1,8 @@
 <template>
   <div class="home-wrap">
     <div class="header-bar">
-        <Button type="primary" @click="open(false)">公告</Button>
-      <span class="btn-search" @click="$router.push({name: isLogin ? 'collect' : 'login'})">
+        <Button icon="md-notifications" type="primary" @click="open(false)">公告</Button>
+      <span class="btn-search" @click="$router.push({name: isLogin ? 'mine' : 'login'})">
         <i :class="['iconfont', isLogin ? 'icon-star' : 'icon-login']"></i>
       </span>
     </div>
@@ -42,10 +42,8 @@
           </li>
         </Scroll>
 
-
       </TabPane>
     </Tabs>
-
 
   </div>
 </template>
@@ -59,14 +57,18 @@ export default {
   components: { Slider, Item },
   data() {
     return {
+      bull: {
+        content: '',
+        title: ''
+      },
       form: {
         keyword: '',
-        list: [],
+        list: []
       },
-      post_data:{
+      post_data: {
 
       },
-      isFirst:true,
+      isFirst: true
 
     };
   },
@@ -85,9 +87,10 @@ export default {
   },
   methods: {
     open(nodesc) {
+      this.handleFetchBullet();
       this.$Notice.open({
-        title: 'Notification title',
-        desc: nodesc ? '' : this.form.keyword
+        title: this.bull.title,
+        desc: nodesc ? '' : this.bull.content
       });
     },
     to_add() {
@@ -97,7 +100,7 @@ export default {
     async handleFetchPostData() {
       try {
         this.$http.get('http://127.0.0.1:5000/post/getPostsList').then((response) => {
-          this.post_data = response
+          this.post_data = response;
         });
       } catch (e) {
       }
@@ -105,28 +108,25 @@ export default {
     async handleFetchBullet() {
       try {
         this.$http.get('http://127.0.0.1:5000/bulletin/getBulletinsList').then((response) => {
-          this.form.keyword = response.bulletins_list[0].bulletin_title;
-          console.log(this.form);
+          this.bull.title = response.bulletins_list[0].bulletin_title;
+          this.bull.content = response.bulletins_list[0].bulletin_content;
+          console.log(this.bull);
         });
       } catch (e) {
       }
     },
 
     async handleFetchData() {
-
       try {
         this.$http.get('http://127.0.0.1:5000/canteen/getCanteensList').then((response) => {
           // console.log(response)
 
-
           this.form.list = [...this.form.list, ...response.canteens_list];
           for (let i in this.form.list) {
-            let win =  this.form.list[i]
+            let win = this.form.list[i];
             // console.log(win)
           }
-          this.form.list=this.form.list.reverse()
-
-
+          this.form.list = this.form.list.reverse();
         });
       } catch (e) {
       }
