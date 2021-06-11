@@ -8,17 +8,11 @@
     </div>
 
     <Tabs value="name1"   :animated="false">
-      <div v-if="userInfo.permission">
-        <Button type="primary"  @click="to_add" long>添加餐厅档口</Button>
-
-      </div>
-      <template v-else>
-        <div ></div>
-      </template>
-
       <TabPane label="固定发帖" name="name1"  >
         <div >
-
+          <div v-if="userInfo.permission">
+            <Button type="primary"  @click="to_add" long>添加餐厅档口</Button>
+          </div>
           <Scroll  :data="form.list"   height="1000px" style="padding-bottom: 100px">
             <Item :list="form.list" isHome></Item>
           </Scroll>
@@ -27,7 +21,9 @@
       </TabPane>
 
       <TabPane label="自主发帖" name="name2">
-
+        <div >
+          <Button type="primary"  @click="to_addpost" long>发布帖子</Button>
+        </div>
 <!--        <div v-if="userInfo.permission">-->
 <!--          <Button type="primary"  @click="to_add" long>+</Button>-->
 

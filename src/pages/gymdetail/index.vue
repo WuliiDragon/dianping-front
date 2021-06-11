@@ -46,7 +46,7 @@
           </li>
           <li class="no-comments" v-else>暂无评论</li>
 
-          <li class="item-box" v-for="(item, index) in data.canteen_comment" :key="index">
+          <li class="item-box" v-for="(item, index) in data.gym_comment" :key="index">
             <div class="avatar-box">
               <img class="avatar" :src="item.comment_userpic" :alt="item.name"/>
             </div>
@@ -56,10 +56,10 @@
               </div>
 
 
-              <p class="text">{{ item.gym_comment }}</p>
-              <div class="pic-bar" v-if="item.gym_comment.length">
+              <p class="text">{{ item.comment_content }}</p>
+              <div class="pic-bar" v-if="item.comment_pic">
                 <ul class="pic-list">
-                  <li class="pic-box" v-for="(_item, _index) in item.gym_comment" :key="_index">
+                  <li class="pic-box" v-for="(_item, _index) in item.comment_pic" :key="_index">
                     <img class="pic" :src="_item" alt/>
                   </li>
                 </ul>
@@ -169,10 +169,8 @@ export default {
 
       try {
         this.$http.get('http://127.0.0.1:5000/gym/' + this.gym_id).then((response) => {
-
           console.log(response);
           this.data = response;
-          this.data.gym_comment = this.data.gym_comment.reverse();
         });
       } catch (e) {
       }

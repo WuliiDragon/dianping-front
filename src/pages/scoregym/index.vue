@@ -111,8 +111,9 @@ export default {
 
     return {
       submitData: { // 这里是需要携带的数据
-        zone_id:this.gym_id,
-        pic_zone:'4'
+        srcLanguage: "en",
+        zone_id: '3',
+        pic_zone:'2'
       },
 
       imgName: '',
@@ -131,7 +132,7 @@ export default {
   methods: {
     back() {
       console.log(this.post_id);
-      this.$router.push({ name: 'detail', params: { window_no: this.post_id } });
+      this.$router.push({ name: 'gymdetail', params: { gym_id: this.gym_id } });
     },
     insert() {
 
@@ -151,15 +152,14 @@ export default {
         var self = this;
         var data = Qs.stringify({
           'user_id': this.userInfo.user_id,
-          'zone_id': this.canteen_id,
-          'comment_zone': 1,
+          'zone_id':  this.gym_id,
+          'comment_zone': 3,
           'comment_content': self.context,
-          'taste_score': self.score.score_taste,
-          'health_score': self.score.score_health,
-          'money_score': self.score.score_money,
-          'service_score': self.score.score_service,
-          'fullness_score': self.score.score_fullness,
-          'pic_list':pic_ids
+          'equipment_score': self.score.equipment_score,
+          'environment_score': self.score.environment_score,
+          'health_score': self.score.health_score,
+          'popularity_score': self.score.popularity_score,
+          'pic_list': pic_ids
         })
 
 
@@ -168,7 +168,7 @@ export default {
         }
         ).then((response) => {
           if(response.msg=='评论插入成功'){
-              self.$router.push({ name: 'detail', params: { canteen_id: self.canteen_id } });
+              self.$router.push({ name: 'gymdetail', params: { gym_id: this.gym_id } });
           }
 
 

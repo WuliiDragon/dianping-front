@@ -12,7 +12,7 @@
           <div class="top-box">
             <h3 class="name">{{item.gym_name}}</h3>
             <div v-if="userInfo.permission" class="distance">
-              <Button type="error" shape="circle" icon="ios-trash" @click.stop="delete_canteen(item.canteen_id)"></Button>
+              <Button type="error" shape="circle" icon="ios-trash" @click.stop="delete_canteen(item.gym_id)"></Button>
 
             </div>
           </div>
@@ -70,8 +70,8 @@ export default {
   activated() {
   },
   methods: {
-    delete_canteen(canteen_id){
-      console.log(canteen_id)
+    delete_canteen(gym_id){
+      console.log(gym_id)
       this.$Modal.confirm({
         title: '确认对话框标题',
         content: '确定删除档口以及相关评论信息？',
@@ -80,10 +80,10 @@ export default {
             var self = this;
             var data = Qs.stringify({
               'user_id': self.userInfo.user_id,
-              'canteen_id': canteen_id,
+              'gym_id': gym_id,
             });
 
-            this.$http.post('http://127.0.0.1:5000/canteen/deleteCanteen', data, {
+            this.$http.post('http://127.0.0.1:5000/gym/deleteGym', data, {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
               }
             ).then((response) => {
