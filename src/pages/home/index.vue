@@ -1,8 +1,8 @@
 <template>
   <div class="home-wrap">
     <div class="header-bar">
-        <Button type="primary" @click="open(false)">公告</Button>
-      <span class="btn-search" @click="$router.push({name: isLogin ? 'collect' : 'login'})">
+        <Button icon="md-notifications" type="primary" @click="open(false)">公告</Button>
+      <span class="btn-search" @click="$router.push({name: isLogin ? 'mine' : 'login'})">
         <i :class="['iconfont', isLogin ? 'icon-star' : 'icon-login']"></i>
       </span>
     </div>
@@ -62,14 +62,18 @@ export default {
   components: { Slider, Item, postItem},
   data() {
     return {
+      bull: {
+        content: '',
+        title: ''
+      },
       form: {
         keyword: '',
-        list: [],
+        list: []
       },
-      post_data:{
+      post_data: {
         posts_list:[]
       },
-      isFirst:true,
+      isFirst: true
 
     };
   },
@@ -88,9 +92,10 @@ export default {
   },
   methods: {
     open(nodesc) {
+      this.handleFetchBullet();
       this.$Notice.open({
-        title: '公告标题',
-        desc: nodesc ? '' : this.form.keyword
+        title: this.bull.title,
+        desc: nodesc ? '' : this.bull.content
       });
     },
     to_add() {
@@ -109,8 +114,9 @@ export default {
     async handleFetchBullet() {
       try {
         this.$http.get('http://127.0.0.1:5000/bulletin/getBulletinsList').then((response) => {
-          this.form.keyword = response.bulletins_list[0].bulletin_title;
-          console.log(this.form);
+          this.bull.title = response.bulletins_list[0].bulletin_title;
+          this.bull.content = response.bulletins_list[0].bulletin_content;
+          console.log(this.bull);
         });
       } catch (e) {
       }
@@ -121,16 +127,40 @@ export default {
       try {
         this.$http.get('http://127.0.0.1:5000/canteen/getCanteensList').then((response) => {
           // console.log(response)
-
-
           this.form.list = [...this.form.list, ...response.canteens_list];
+          let A = new Array();
+          let B = new Array();
+          let C = new Array();
           for (let i in this.form.list) {
-            let win =  this.form.list[i]
-            // console.log(win)
+            let win = this.form.list[i];
+            if (win.canteen_district=="A"){
+              A.push(win);
+            }
           }
-          this.form.list=this.form.list.reverse()
-
-
+          for (let i in this.form.list) {
+            let win = this.form.list[i];
+            if (win.canteen_district=="B"){
+              B.push(win);
+            }
+          }
+          for (let i in this.form.list) {
+            let win = this.form.list[i];
+            if (win.canteen_district=="C"){
+              C.push(win);
+            }
+          }
+          console.log(A);
+          this.form.list.splice(0,this.form.list.length);
+          for (var i in C) {
+            this.form.list.push(C[i]);
+          }
+          for (var i in B) {
+            this.form.list.push(B[i]);
+          }
+          for (var i in A) {
+            this.form.list.push(A[i]);
+          }
+          this.form.list = this.form.list.reverse();
         });
       } catch (e) {
       }

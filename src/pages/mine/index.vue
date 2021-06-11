@@ -168,30 +168,25 @@ export default {
   height: 100vh;
   font-size: 14px;
   color: $fs333;
-
   .user-box {
     @include fcol(flex-start);
     padding: 30px 0 20px;
-
     .avatar-box {
       width: 60px;
       height: 60px;
       padding: 5px;
       border: 1px solid $bdeee;
       border-radius: 50%;
-
       .avatar {
         width: 100%;
         height: 100%;
         border-radius: 50%;
       }
     }
-
     .name {
       @include frow();
       margin-top: 10px;
     }
-
     .btn-logout {
       @include frow();
       width: 120px;
