@@ -1,29 +1,18 @@
 <template>
   <div class="home-wrap">
     <div class="header-bar">
-      <div class="search-box">
-        <i class="iconfont icon-search"></i>
-        <input class="search" type="text" v-model="form.keyword" placeholder="请输入关键字" @keyup="handleSearch($event)" />
-      </div>
-
-
+        <Button type="primary" @click="open(false)">公告</Button>
       <span class="btn-search" @click="$router.push({name: isLogin ? 'collect' : 'login'})">
         <i :class="['iconfont', isLogin ? 'icon-star' : 'icon-login']"></i>
       </span>
     </div>
 
     <Tabs value="name1"   :animated="false">
-      <div v-if="userInfo.permission">
-        <Button type="primary"  @click="to_add" long>添加餐厅档口</Button>
-
-      </div>
-      <template v-else>
-        <div ></div>
-      </template>
-
       <TabPane label="固定发帖" name="name1"  >
         <div >
-
+          <div v-if="userInfo.permission">
+            <Button type="primary"  @click="to_add" long>添加餐厅档口</Button>
+          </div>
           <Scroll  :data="form.list"   height="1000px" style="padding-bottom: 100px">
             <Item :list="form.list" isHome></Item>
           </Scroll>
@@ -32,7 +21,9 @@
       </TabPane>
 
       <TabPane label="自主发帖" name="name2">
-
+        <div >
+          <Button type="primary"  @click="to_addpost" long>发布帖子</Button>
+        </div>
 <!--        <div v-if="userInfo.permission">-->
 <!--          <Button type="primary"  @click="to_add" long>+</Button>-->
 
@@ -81,17 +72,24 @@ export default {
   },
   computed: mapState(['userInfo', 'isLogin']),
   activated() {
-    // if (this.isFirst) {
+     if (this.isFirst) {
       this.isFirst = false;
       this.handleFetchData();
-      this.handleFetchPostData()
-    // }
+      this.handleFetchPostData();
+      this.handleFetchBullet();
+     }
     // 解决搜索回来页面不能滚动bug
     if (this.$refs.scrollRef) {
       this.$refs.scrollRef.handleRefresh();
     }
   },
   methods: {
+    open(nodesc) {
+      this.$Notice.open({
+        title: 'Notification title',
+        desc: nodesc ? '' : this.form.keyword
+      });
+    },
     to_add() {
       this.$router.push({ name: 'add', params: { user_id: this.userInfo.id } });
     },
@@ -100,14 +98,19 @@ export default {
       try {
         this.$http.get('http://127.0.0.1:5000/post/getPostsList').then((response) => {
           this.post_data = response
-          // console.log(this.post_data)
-
-
         });
       } catch (e) {
       }
     },
-
+    async handleFetchBullet() {
+      try {
+        this.$http.get('http://127.0.0.1:5000/bulletin/getBulletinsList').then((response) => {
+          this.form.keyword = response.bulletins_list[0].bulletin_title;
+          console.log(this.form);
+        });
+      } catch (e) {
+      }
+    },
 
     async handleFetchData() {
 
@@ -151,6 +154,11 @@ export default {
 .home-wrap {
   height: 100vh;
   .header-bar {
+    .ivu-btn-primary {
+      color: #fff;
+      background-color: #f3394e;
+      border-color: #fff;
+    }
     @include frow(space-between);
     height: 50px;
     font-size: 16px;

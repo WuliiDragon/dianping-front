@@ -2,7 +2,7 @@
 
   <div class="detail-wrap">
     <Header title="商品详情">
-      <Button  :ghost="true" to="/detail">
+      <Button  :ghost="true" to="/plaza">
         <Icon type="ios-arrow-back" />
         返回
       </Button>
@@ -214,6 +214,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ivu-layout-header {
+  background: #f3394e;
+  padding: 0 50px;
+  height: 64px;
+  line-height: 64px;
+}
 .detail-wrap {
   height: 100vh;
   font-size: 14px;

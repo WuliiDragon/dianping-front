@@ -12,20 +12,39 @@
             :before-upload="handleUpload"
             :on-success="handleSuccess"
             action="http://localhost:5000/pic/uploadUserPhoto">
-            <Button icon="ios-cloud-upload-outline">点击上传头像</Button>
+            <Button class="btn-logout" icon="ios-cloud-upload-outline">点击上传头像</Button>
           </Upload>
           <div v-if="file !== null">Upload file: {{ file.name }}
-            <Button type="text" @click="upload" :loading="loadingStatus">{{ loadingStatus ? 'Uploading' : 'Click to upload' }}</Button>
+            <Button class="btn-logout" type="text" @click="upload" :loading="loadingStatus">{{ loadingStatus ? 'Uploading' : 'Click to upload' }}</Button>
           </div>
+        </div>
+        <div class="manager" v-if="this._user.permission=='1'">
+          <Button class="btn-logout"  @click="value3 = true" type="primary">发布公告</Button>
+          <Drawer
+            title="Create"
+            v-model="value3"
+            width="720"
+            :mask-closable="false"
+            :styles="styles"
+          >
+            <Form :model="bulletin">
+              <FormItem label="标题" label-position="top">
+                <Input v-model="bulletin.title" placeholder="please enter title" />
+              </FormItem>
+              <FormItem label="内容" label-position="top">
+                <Input type="textarea" v-model="bulletin.content" :rows="4" placeholder="please enter the bulltin" />
+              </FormItem>
+            </Form>
+            <div class="demo-drawer-footer">
+              <Button style="margin-right: 8px" @click="value3 = false">Cancel</Button>
+              <Button type="primary" @click="insertbulletin">Submit</Button>
+            </div>
+          </Drawer>
         </div>
         <div class="btn-logout" @click="handleLogout">退出</div>
       </div>
+
     </scroll>
-    <div class="manager" v-if="this._user.permission=='1'">
-      <Button icon="ios-cloud-upload-outline" @click="$router.push('home')">
-        管理员
-      </Button>
-    </div>
   </div>
 </template>
 
@@ -34,13 +53,23 @@ export default {
   name: 'Mine',
   data() {
     return {
+      value3: false,
+      styles: {
+        height: 'calc(100% - 55px)',
+        overflow: 'auto',
+        paddingBottom: '53px',
+        position: 'static'
+      },
+      bulletin: {
+        title: '',
+        content: ''
+      },
       file: null,
       loadingStatus: false
     };
   },
   computed: {
     _user() {
-      console.log(this.$store.state.userInfo);
       return this.$store.state.userInfo;
     }
   },
@@ -58,6 +87,14 @@ export default {
     handleUpload(file) {
       this.file = file;
       return false;
+    },
+    insertbulletin() {
+      var param = new FormData();
+      param.append('admin_id', this._user.user_id);
+      param.append('bulletin_title', this.bulletin.title);
+      param.append('bulletin_content', this.bulletin.content);
+      this.$http.post('http://localhost:5000/bulletin/insertBulletin', param);
+      this.value3 = false;
     },
     async upload() {
       console.log(this._user.user_id)
@@ -83,6 +120,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ivu-layout-header {
+  background: #f3394e;
+  padding: 0 50px;
+  height: 64px;
+  line-height: 64px;
+}
 .mine-wrap {
   height: 100vh;
   font-size: 14px;

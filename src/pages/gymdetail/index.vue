@@ -44,7 +44,7 @@
           <li class="title-box" v-if="data.gym_comment.length">
             <span class="title">{{ '师生点评 ' + data.gym_comment.length + '条' }}</span>
           </li>
-          <li class="no-comments" v-else >暂无评论</li>
+          <li class="no-comments" v-else>暂无评论</li>
 
           <li class="item-box" v-for="(item, index) in data.gym_comment" :key="index">
             <div class="avatar-box">
@@ -57,11 +57,10 @@
 
 
               <p class="text">{{ item.comment_content }}</p>
-
-              <div class="pic-bar" v-if="item.comment_pic.length">
+              <div class="pic-bar" v-if="item.comment_pic">
                 <ul class="pic-list">
                   <li class="pic-box" v-for="(_item, _index) in item.comment_pic" :key="_index">
-                    <img class="pic" :src=" item.comment_pic[_index]" alt/>
+                    <img class="pic" :src="_item" alt/>
                   </li>
                 </ul>
 
@@ -70,16 +69,9 @@
                 <Button type="error" shape="circle" icon="ios-trash"
                         @click="to_delete_comment(item.comment_id)"></Button>
               </div>
-
-              <div v-if="flags">
-
-              </div>
-              <div v-else>
-
-              </div>
-              <div style="float: right; margin-right:10px" >
-                <Button  v-show="!item.click_like" type="text" icon="ios-heart" @click="to_like(item.comment_id,index)">{{ item.comment_like }}</Button>
-                <Button  v-show="item.click_like"  type="error"  shape="circle"   @click="to_like(item.comment_id,index)">{{ item.comment_like }}</Button>
+              <!--              <Icon type="heart"></Icon>-->
+              <div style="float: right;">
+                <Button type="text" icon="ios-heart" @click="to_like(item.comment_id,index)">{{ item.comment_like }}</Button>
               </div>
 
 
@@ -107,7 +99,6 @@ export default {
         store: {},
         comments: []
       },
-      flags:true,
       data: {
         gym_comment: []
       },
@@ -133,7 +124,7 @@ export default {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
               }
             ).then((response) => {
-              this.$router.go(0);
+              // this.$router.go(0);
               console.log(response);
 
             });
@@ -147,40 +138,22 @@ export default {
     },
     to_like(comment_id,index) {
 
+      console.log(index,comment_id)
       var self = this;
-      console.log(index)
-      this.data.gym_comment[index].click_like = !this.data.gym_comment[index].click_like
-      this.flags = !this.flags
+      var data = Qs.stringify({
+        'user_id': self.userInfo.user_id,
+        'comment_id': comment_id,
+      });
 
-      if (this.data.gym_comment[index].click_like){
-        var data = Qs.stringify({
-          'user_id': self.userInfo.user_id,
-          'comment_id': comment_id,
-        });
+      this.$http.post('http://127.0.0.1:5000/comment/like', data, {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+      ).then((response) => {
+        self.data.canteen_comment[index].comment_like = response.comment_like
 
-        this.$http.post('http://127.0.0.1:5000/comment/like', data, {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-          }
-        ).then((response) => {
-          self.data.gym_comment[index].comment_like = response.comment_like
-          console.log(response);
-        });
+        console.log(response);
+      });
 
-      }else{
-
-        var data = Qs.stringify({
-          'user_id': self.userInfo.user_id,
-          'comment_id': comment_id,
-        });
-
-        this.$http.post('http://127.0.0.1:5000/comment/dislike', data, {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-          }
-        ).then((response) => {
-          self.data.gym_comment[index].comment_like = response.comment_like
-          console.log(response);
-        });
-      }
     },
     to_score() {
       console.log(this.gym_id)
@@ -196,15 +169,8 @@ export default {
 
       try {
         this.$http.get('http://127.0.0.1:5000/gym/' + this.gym_id).then((response) => {
-
           console.log(response);
           this.data = response;
-
-          for (let i = 0; i < response.gym_comment.length; i++) {
-            console.log(this.data.gym_comment[i])
-            this.data.gym_comment[i].click_like=false;
-          }
-
         });
       } catch (e) {
       }
@@ -232,6 +198,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ivu-layout-header {
+  background: #f3394e;
+  padding: 0 50px;
+  height: 64px;
+  line-height: 64px;
+}
 .detail-wrap {
   height: 100vh;
   font-size: 14px;

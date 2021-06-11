@@ -14,7 +14,7 @@
 
 
         <FormItem label="评价">
-          <Input v-model="comment_content" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
+          <Input v-model="context" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
                  placeholder="请输入您的评价"></Input>
         </FormItem>
 
@@ -83,6 +83,8 @@
 
 
 
+
+
         <FormItem>
           <Button type="primary" @click="insert">提交评价</Button>
           <Button style="margin-left: 8px">重置</Button>
@@ -109,7 +111,8 @@ export default {
 
     return {
       submitData: { // 这里是需要携带的数据
-        zone_id:this.gym_id,
+        srcLanguage: "en",
+        zone_id: '3',
         pic_zone:'2'
       },
 
@@ -117,7 +120,7 @@ export default {
       visible: false,
       uploadList: [],
 
-      comment_content: '这网球场太猛了！',
+      context: '这网球场太猛了！',
       score: {
         equipment_score: 2,
         environment_score: 3,
@@ -129,11 +132,14 @@ export default {
   methods: {
     back() {
       console.log(this.post_id);
-      this.$router.push({ name: 'detail', params: { window_no: this.post_id } });
+      this.$router.push({ name: 'gymdetail', params: { gym_id: this.gym_id } });
     },
     insert() {
 
-
+      // if (!this.$store.state.isLogin){
+      //     alert('您还未登录')
+      //     return
+      // }
       try {
         var pic_ids=""
 
@@ -146,14 +152,14 @@ export default {
         var self = this;
         var data = Qs.stringify({
           'user_id': this.userInfo.user_id,
-          'zone_id': this.gym_id,
+          'zone_id':  this.gym_id,
           'comment_zone': 3,
-          'comment_content':this.comment_content,
-          'equipment_score':this.score.equipment_score,
-          'environment_score':this.score.environment_score,
-          'health_score':this.score.health_score,
-          'popularity_score':this.score.popularity_score,
-          'pic_list':pic_ids
+          'comment_content': self.context,
+          'equipment_score': self.score.equipment_score,
+          'environment_score': self.score.environment_score,
+          'health_score': self.score.health_score,
+          'popularity_score': self.score.popularity_score,
+          'pic_list': pic_ids
         })
 
 
@@ -162,7 +168,7 @@ export default {
         }
         ).then((response) => {
           if(response.msg=='评论插入成功'){
-              self.$router.push({ name: 'gymdetail', params: { this: self.gym_id } });
+              self.$router.push({ name: 'gymdetail', params: { gym_id: this.gym_id } });
           }
 
 

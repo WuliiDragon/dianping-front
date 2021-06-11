@@ -118,6 +118,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ivu-layout-header {
+  background: #f3394e;
+  padding: 0 50px;
+  height: 64px;
+  line-height: 64px;
+}
 .login-wrap {
   height: 100vh;
   font-size: 14px;
