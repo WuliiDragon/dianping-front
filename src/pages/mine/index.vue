@@ -12,14 +12,14 @@
             :before-upload="handleUpload"
             :on-success="handleSuccess"
             action="http://localhost:5000/pic/uploadUserPhoto">
-            <Button icon="ios-cloud-upload-outline">点击上传头像</Button>
+            <Button class="btn-logout" icon="ios-cloud-upload-outline">点击上传头像</Button>
           </Upload>
           <div v-if="file !== null">Upload file: {{ file.name }}
-            <Button type="text" @click="upload" :loading="loadingStatus">{{ loadingStatus ? 'Uploading' : 'Click to upload' }}</Button>
+            <Button class="btn-logout" type="text" @click="upload" :loading="loadingStatus">{{ loadingStatus ? 'Uploading' : 'Click to upload' }}</Button>
           </div>
         </div>
         <div class="manager" v-if="this._user.permission=='1'">
-          <Button @click="value3 = true" type="primary">发布公告</Button>
+          <Button class="btn-logout"  @click="value3 = true" type="primary">发布公告</Button>
           <Drawer
             title="Create"
             v-model="value3"
@@ -53,7 +53,6 @@ export default {
   name: 'Mine',
   data() {
     return {
-      isFirst:true,
       value3: false,
       styles: {
         height: 'calc(100% - 55px)',
@@ -65,33 +64,16 @@ export default {
         title: '',
         content: ''
       },
-      comments: {
-        comments_list: []
-      },
       file: null,
       loadingStatus: false
     };
   },
   computed: {
     _user() {
-      if (this.isFirst) {
-        this.isFirst = false;
-        this.handleFetchData();
-      }
       return this.$store.state.userInfo;
     }
   },
   methods: {
-    async handleFetchData() {
-      try {
-        this.$http.get('http://127.0.0.1:5000/user/commentsRecord/' + this._user.user_id).then((response) => {
-          console.log(response);
-          this._user.comments_list = response.comments_list;
-          console.log(this._user);
-        });
-      } catch (e) {
-      }
-    },
     handleLogout() {
       this.$confirm({
         msg: '你确定要退出登录吗？',
@@ -112,7 +94,7 @@ export default {
       param.append('bulletin_title', this.bulletin.title);
       param.append('bulletin_content', this.bulletin.content);
       this.$http.post('http://localhost:5000/bulletin/insertBulletin', param);
-      this.value3=false;
+      this.value3 = false;
     },
     async upload() {
       console.log(this._user.user_id)
@@ -138,6 +120,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ivu-layout-header {
+  background: #f3394e;
+  padding: 0 50px;
+  height: 64px;
+  line-height: 64px;
+}
 .mine-wrap {
   height: 100vh;
   font-size: 14px;

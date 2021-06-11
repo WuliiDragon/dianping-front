@@ -1,12 +1,7 @@
 <template>
   <div class="home-wrap">
     <div class="header-bar">
-      <div class="search-box">
-        <i class="iconfont icon-search"></i>
-        <input class="search" type="text" v-model="form.keyword" placeholder="请输入关键字" @keyup="handleSearch($event)" />
-      </div>
-
-
+        <Button type="primary" @click="open(false)">公告</Button>
       <span class="btn-search" @click="$router.push({name: isLogin ? 'collect' : 'login'})">
         <i :class="['iconfont', isLogin ? 'icon-star' : 'icon-login']"></i>
       </span>
@@ -81,18 +76,24 @@ export default {
   },
   computed: mapState(['userInfo', 'isLogin']),
   activated() {
-    // if (this.isFirst) {
+     if (this.isFirst) {
       this.isFirst = false;
       this.handleFetchData();
       this.handleFetchPostData();
       this.handleFetchBullet();
-    // }
+     }
     // 解决搜索回来页面不能滚动bug
     if (this.$refs.scrollRef) {
       this.$refs.scrollRef.handleRefresh();
     }
   },
   methods: {
+    open(nodesc) {
+      this.$Notice.open({
+        title: 'Notification title',
+        desc: nodesc ? '' : this.form.keyword
+      });
+    },
     to_add() {
       this.$router.push({ name: 'add', params: { user_id: this.userInfo.id } });
     },
@@ -157,6 +158,11 @@ export default {
 .home-wrap {
   height: 100vh;
   .header-bar {
+    .ivu-btn-primary {
+      color: #fff;
+      background-color: #f3394e;
+      border-color: #fff;
+    }
     @include frow(space-between);
     height: 50px;
     font-size: 16px;
