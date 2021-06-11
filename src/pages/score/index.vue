@@ -19,25 +19,25 @@
         </FormItem>
 
         <FormItem label="味道">
-          <Rate v-model="score.score_taste"/>
+          <Rate v-model="score.score_taste" :count="10"/>
         </FormItem>
 
         <FormItem label="满意度">
-          <Rate v-model="score.score_fullness"/>
+          <Rate v-model="score.score_fullness" :count="10"/>
         </FormItem>
 
 
         <FormItem label="卫生">
-          <Rate v-model="score.score_health"/>
+          <Rate v-model="score.score_health" :count="10"/>
         </FormItem>
 
 
         <FormItem label="价格">
-          <Rate v-model="score.score_money"/>
+          <Rate v-model="score.score_money" :count="10"/>
         </FormItem>
 
         <FormItem label="服务">
-          <Rate v-model="score.score_service"/>
+          <Rate v-model="score.score_service" :count="10"/>
         </FormItem>
         <FormItem label="图片">
 
@@ -122,7 +122,7 @@ export default {
       visible: false,
       uploadList: [],
 
-      context: '秘制小汉堡，臭豆腐，腐乳，加柠檬，老干妈，既然实惠，还管饱，你看这汉堡做的行不行！',
+      context: '秘制小汉堡，既然实惠，还管饱，你看这汉堡做的行不行！',
       score: {
         score_taste: 2,
         score_health: 3,

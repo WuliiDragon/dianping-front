@@ -24,6 +24,9 @@
 
           <div class="intr-box">
             <h2 class="name">{{ data.canteen_name }}</h2>
+
+
+            <span class="name">{{ data.canteen_intro  }}</span>
             <span class="text">{{ data.canteen_district + '区' }}</span>
             <span class="text">{{ data.canteen_floor + '层' }}</span>
             <div class="score-box">
@@ -60,9 +63,48 @@
             </div>
             <div class="content-box">
               <div class="username">{{ item.comment_username }}</div>
-              <div class="score-box">
+
+
+              <div >
+                <div class="score-box">
+                  <span class="text">{{ ' 满意度: ' + item.fullness_score }}</span>
+                  <span class="text">{{ ' 价格: ' + item.money_score }}</span>
+                  <span class="text">{{ ' 卫生: ' + item.taste_score}}</span>
+                  <span class="text" >{{ ' 味道: ' + item.health_score }}</span>
+                  <span class="text">{{ ' 服务: ' +item.service_score }}</span>
+                </div>
+<!--                  <Rate disabled show-text  size="small" allow-half="true" v-model="item.service_score" :count=10>-->
+<!--                  <span>服务</span>-->
+<!--                    <span style="color: #f5a623">{{ item.service_score }} 分</span>-->
+<!--&lt;!&ndash;                  </Rate>&ndash;&gt;-->
+<!--                <Row>-->
+<!--&lt;!&ndash;                  <Rate disabled show-text  allow-half="true" v-model="item.health_score" :count=10>&ndash;&gt;-->
+<!--                    <span style="color: #f5a623">{{ item.health_score }} 分</span>-->
+<!--&lt;!&ndash;                  </Rate>&ndash;&gt;-->
+<!--                </Row>-->
+
+<!--                <Row>-->
+<!--                  <Rate disabled show-text  allow-half="true" v-model="item.fullness_score" :count=10>-->
+<!--                    <span style="color: #f5a623">{{ item.fullness_score }} 分</span>-->
+<!--                  </Rate>-->
+<!--                </Row>-->
+
+<!--                <Row>-->
+<!--                  <Rate disabled show-text  allow-half="true" v-model="item.money_score" :count=10>-->
+<!--                    <span style="color: #f5a623">{{ item.money_score }} 分</span>-->
+<!--                  </Rate>-->
+<!--                </Row>-->
+
+<!--                  <Row>-->
+<!--                    <Rate disabled show-text  allow-half="true" v-model="item.taste_score" :count=10>-->
+<!--                      <span style="color: #f5a623">{{ item.taste_score }} 分</span>-->
+<!--                    </Rate>-->
+<!--                  </Row>-->
               </div>
 
+
+
+<!--              <p class="text">{{ item.comment_time }}</p>-->
 
               <p class="text">{{ item.comment_content }}</p>
               <div class="pic-bar" v-if="item.comment_pic.length">
@@ -192,20 +234,14 @@ export default {
           self.data.canteen_comment[index].comment_like = response.comment_like
           console.log(response);
         });
-
       }
-
-
-
     },
     to_score() {
-      // console.log(this.userInfo)
       if (this.isLogin) {
         this.$router.push({ name: 'score', params: { canteen_id: this.canteen_id, user_id: 1 } });
       } else {
         this.$Message.success('登录才能提交评论');
       }
-
     },
 
     async handleFetchData() {
@@ -213,14 +249,11 @@ export default {
 
       try {
         this.$http.get('http://127.0.0.1:5000/canteen/' + this.canteen_id).then((response) => {
-
           this.data = response;
-
           for (let i = 0; i < response.canteen_comment.length; i++) {
             this.data.canteen_comment[i].click_like=false;
           }
-
-
+          console.log( this.data )
         });
       } catch (e) {
       }
@@ -303,6 +336,7 @@ export default {
       }
 
       .score-box {
+
         .text {
           margin: 0 5px 0 0;
         }
