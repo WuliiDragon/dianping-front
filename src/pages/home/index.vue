@@ -120,11 +120,38 @@ export default {
       try {
         this.$http.get('http://127.0.0.1:5000/canteen/getCanteensList').then((response) => {
           // console.log(response)
-
           this.form.list = [...this.form.list, ...response.canteens_list];
+          let A = new Array();
+          let B = new Array();
+          let C = new Array();
           for (let i in this.form.list) {
             let win = this.form.list[i];
-            // console.log(win)
+            if (win.canteen_district=="A"){
+              A.push(win);
+            }
+          }
+          for (let i in this.form.list) {
+            let win = this.form.list[i];
+            if (win.canteen_district=="B"){
+              B.push(win);
+            }
+          }
+          for (let i in this.form.list) {
+            let win = this.form.list[i];
+            if (win.canteen_district=="C"){
+              C.push(win);
+            }
+          }
+          console.log(A);
+          this.form.list.splice(0,this.form.list.length);
+          for (var i in C) {
+            this.form.list.push(C[i]);
+          }
+          for (var i in B) {
+            this.form.list.push(B[i]);
+          }
+          for (var i in A) {
+            this.form.list.push(A[i]);
           }
           this.form.list = this.form.list.reverse();
         });
