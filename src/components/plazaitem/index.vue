@@ -24,7 +24,7 @@
           <div class="bottom-box">
             <div class="price-box">
               <Rate
-                :count="5"
+                :count="10"
                 disabled
                 v-model="item.plaza_score.plaza_score_total" />
             </div>
