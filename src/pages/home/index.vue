@@ -33,13 +33,15 @@
 <!--        </template>-->
 
         <Scroll isBottom  height="800px">
-          <li  v-for="(item, index) in post_data.posts_list" :key="index">
-            <div style="height: 35px;      margin: 0 15px;       border-top: 1px solid $bdeee;">
-              <div class="username">
-                {{item.post_title}}
-              </div>
-            </div>
-          </li>
+<!--          <li  v-for="(item, index) in post_data.posts_list" :key="index">-->
+<!--            <div style="height: 35px;      margin: 0 15px;       border-top: 1px solid $bdeee;">-->
+<!--              <div class="username">-->
+<!--                {{item.post_title}}-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </li>-->
+          <post-item :list="post_data.posts_list" ></post-item>
+
         </Scroll>
 
 
@@ -53,10 +55,11 @@
 <script>
 import { mapState } from 'vuex';
 import { Slider, Item } from '@/components';
+import postItem from "../../components/postItem";
 
 export default {
   name: 'Home',
-  components: { Slider, Item },
+  components: { Slider, Item, postItem},
   data() {
     return {
       form: {
@@ -64,7 +67,7 @@ export default {
         list: [],
       },
       post_data:{
-
+        posts_list:[]
       },
       isFirst:true,
 
@@ -86,7 +89,7 @@ export default {
   methods: {
     open(nodesc) {
       this.$Notice.open({
-        title: 'Notification title',
+        title: '公告标题',
         desc: nodesc ? '' : this.form.keyword
       });
     },
@@ -98,6 +101,7 @@ export default {
       try {
         this.$http.get('http://127.0.0.1:5000/post/getPostsList').then((response) => {
           this.post_data = response
+          console.log('1111',this.post_data)
         });
       } catch (e) {
       }

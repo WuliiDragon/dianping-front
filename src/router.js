@@ -109,6 +109,13 @@ const router = new Router({
       name: 'gymdetail',
       component: () => import('@/pages/gymdetail')
     },
+
+    {
+      path: '/postdetail/:post_id',
+      name: 'postdetail',
+      component: () => import('@/pages/postdetail')
+    },
+
     {
       path: '/gymscore/:gym_id',
       name: 'gymscore',
@@ -117,6 +124,12 @@ const router = new Router({
     {
       path: '*',
       redirect: '/home'
+    },
+    {
+      path: '/userrecord/:user_id',
+      name:'userrecord',
+      component: () => import('@/pages/userrecord')
+
     }
   ]
 });
