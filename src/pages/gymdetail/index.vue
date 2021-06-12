@@ -2,7 +2,7 @@
 
   <div class="detail-wrap">
     <Header title="商品详情">
-      <Button :ghost="true" to="/gymdetail">
+      <Button :ghost="true" to="/gym">
         <Icon type="ios-arrow-back"/>
         返回
       </Button>
@@ -71,9 +71,11 @@
               </div>
               <!--              <Icon type="heart"></Icon>-->
               <div style="float: right;">
-                <Button type="text" icon="ios-heart" @click="to_like(item.comment_id,index)">{{ item.comment_like }}</Button>
-              </div>
+                <Icon type="arrow-right-a"></Icon>
 
+                <Button  v-show="!item.click_like" type="text" icon="ios-heart" @click="to_like(item.comment_id,index)">{{ item.comment_like }}</Button>
+                <Button  v-show="item.click_like"  type="error"    @click="to_like(item.comment_id,index)">{{ item.comment_like }}</Button>
+              </div>
 
             </div>
           </li>
@@ -137,22 +139,44 @@ export default {
       });
     },
     to_like(comment_id,index) {
-
-      console.log(index,comment_id)
       var self = this;
-      var data = Qs.stringify({
-        'user_id': self.userInfo.user_id,
-        'comment_id': comment_id,
-      });
+      this.data.gym_comment[index].click_like = !this.data.gym_comment[index].click_like;
+       console.log(this.data.gym_comment[index])
+      this.flags = !this.flags
 
-      this.$http.post('http://127.0.0.1:5000/comment/like', data, {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
-      ).then((response) => {
-        self.data.canteen_comment[index].comment_like = response.comment_like
 
-        console.log(response);
-      });
+      if (this.data.gym_comment[index].click_like){
+        var data = Qs.stringify({
+          'user_id': self.userInfo.user_id,
+          'comment_id': comment_id,
+        });
+
+        this.$http.post('http://127.0.0.1:5000/comment/like', data, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          }
+        ).then((response) => {
+          self.data.gym_comment[index].comment_like = response.comment_like
+          console.log(response);
+        });
+
+      }else{
+
+        var data = Qs.stringify({
+          'user_id': self.userInfo.user_id,
+          'comment_id': comment_id,
+        });
+
+        this.$http.post('http://127.0.0.1:5000/comment/dislike', data, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          }
+        ).then((response) => {
+          self.data.gym_comment[index].comment_like = response.comment_like
+          console.log(response);
+        });
+
+      }
+
+
 
     },
     to_score() {

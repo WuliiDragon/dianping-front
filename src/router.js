@@ -33,6 +33,11 @@ const router = new Router({
       component: () => import('@/pages/plazascore')
     },
     {
+      path: '/postscore/:user_id:post_id',
+      name: 'postscore',
+      component: () => import('@/pages/postscore')
+    },
+    {
       path: '/coursescore/:user_id:course_id',
       name: 'coursescore',
       component: () => import('@/pages/coursescore')
@@ -105,6 +110,11 @@ const router = new Router({
       component: () => import('@/pages/addgym')
     },
     {
+      path: '/addpost/:user_id',
+      name: 'addpost',
+      component: () => import('@/pages/addpost')
+    },
+    {
       path: '/gymdetail/:gym_id',
       name: 'gymdetail',
       component: () => import('@/pages/gymdetail')
@@ -125,12 +135,7 @@ const router = new Router({
       path: '*',
       redirect: '/home'
     },
-    {
-      path: '/userrecord/:user_id',
-      name:'userrecord',
-      component: () => import('@/pages/userrecord')
 
-    }
   ]
 });
 

@@ -45,14 +45,10 @@
 </template>
 <script>
 import Qs from 'qs';
+import {mapState} from "vuex";
 
 export default {
-  computed: {
-    _user() {
-      console.log(this.$store.state.userInfo);
-      return this.$store.state.userInfo;
-    }
-  },
+  computed: mapState(['userInfo', 'isLogin']),
   data() {
     return {
 
@@ -96,7 +92,7 @@ export default {
       try {
         var self = this;
         var data = Qs.stringify({
-          'user_id': self.user_id,
+          'user_id': self.userInfo.user_id,
           'course_name': self.courseName,
           'course_school': self.courseSchool,
           'course_credit': self.courseCredit,
