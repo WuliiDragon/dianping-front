@@ -11,8 +11,6 @@
       </span>
     </div>
 
-    <Tabs value="name1"   :animated="false">
-      <TabPane label="固定发帖" name="name1"  >
         <div >
           <div v-if="userInfo.permission">
             <Button type="primary"  @click="to_add" long>添加课程</Button>
@@ -27,9 +25,7 @@
 
         </div>
 
-      </TabPane>
 
-    </Tabs>
 
   </div>
 </template>

@@ -1,46 +1,64 @@
 <template>
   <div class="home-wrap">
     <div class="header-bar">
-      <div class="search-box">
-        <i class="iconfont icon-search"></i>
-        <input class="search" type="text" v-model="form.keyword" placeholder="请输入关键字" @keyup="handleSearch($event)"/>
-      </div>
-
-      <span class="btn-search" @click="$router.push({name: isLogin ? 'collect' : 'login'})">
-        <i :class="['iconfont', isLogin ? 'icon-star' : 'icon-login']"></i>
-      </span>
+      <Button  :ghost="true" to="/">
+        <Icon type="ios-arrow-back" />
+        返回
+      </Button>
     </div>
 
-    <div>
-      <div v-if="userInfo.permission">
-        <Button type="primary" @click="to_add" long>添加课程</Button>
+    <Tabs value="name1" :animated="false">
+      <TabPane label="我的评论" name="name1">
 
-      </div>
-      <template v-else>
-        <div></div>
-      </template>
-      <Scroll :data="form.list" height="1000px" style="padding-bottom: 100px">
-        <CourseItem :list="form.list" isHome></CourseItem>
-      </Scroll>
+        <Scroll isBottom height="800px" :data="comments_list">
+          <div>
+            <ul class="comments-list">
+              <li class="item-box" v-for="(item, index) in comments_list" :key="index">
 
-</div>
-    </div>
+                <div class="content-box" style="margin-left:20px">
+
+                  <span style="margin-top: 5px;">
+                      {{ item.comment_like }} 赞
+                    </span>
+                  <div class="username" style="margin-top: 5px;">{{ item.comment_time }}</div>
+
+                  <p class="text" style="margin-top: 5px;">{{ item.comment_content }}</p>
+
+                </div>
+              </li>
+            </ul>
+
+          </div>
+        </Scroll>
+      </TabPane>
+
+      <TabPane label="我的发帖" name="name2">
+        <Scroll isBottom height="800px">
+          <post-item :list="posts_list"></post-item>
+        </Scroll>
+      </TabPane>
+    </Tabs>
+
+
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { Slider, Item } from '@/components';
-import CourseItem from '../../components/courseitem';
+import postItem from '../../components/postItem';
 
 export default {
   name: 'Home',
-  components: { CourseItem, Slider, Item },
+  components: { Slider, Item, postItem },
   data() {
     return {
       form: {
         keyword: '',
         list: [],
       },
+      posts_list: [],
+      comments_list: [],
       isFirst: true,
 
     };
@@ -49,7 +67,8 @@ export default {
   activated() {
     if (this.isFirst) {
       this.isFirst = false;
-      this.handleFetchData();
+      this.handleFetchCommentsData();
+      this.handleFetchPostData();
     }
     // 解决搜索回来页面不能滚动bug
     if (this.$refs.scrollRef) {
@@ -57,17 +76,31 @@ export default {
     }
   },
   methods: {
-    to_add() {
-      console.log(this.userInfo.id);
-      this.$router.push({ name: 'addcourse', params: { user_id: this.userInfo.id } });
+    open(nodesc) {
+      this.$Notice.open({
+        title: 'Notification title',
+        desc: nodesc ? '' : this.form.keyword
+      });
     },
-    async handleFetchData() {
+
+    async handleFetchPostData() {
+      try {
+        this.$http.get('http://127.0.0.1:5000/user/postsRecord/' + this.user_id).then((response) => {
+          this.posts_list = response.posts_list;
+          // console.log('1111',this.posts_list)
+        });
+      } catch (e) {
+      }
+    },
+
+    async handleFetchCommentsData() {
 
       try {
-        this.$http.get('http://127.0.0.1:5000/course/getCoursesList').then((response) => {
-          console.log(response);
-          this.form.list = [...this.form.list, ...response.courses_list];
-
+        this.$http.get('http://127.0.0.1:5000/user/commentsRecord/' + this.user_id).then((response) => {
+          this.comments_list = [];
+          this.comments_list = response.comments_list;
+          this.comments_list = this.comments_list.reverse();
+          console.log('33', this.comments_list);
         });
       } catch (e) {
       }
@@ -87,6 +120,16 @@ export default {
         query: { word, time: +new Date() }
       });
     }
+  },
+  watch: {
+    $route: {
+      handler(val) {
+        Object.assign(this.$data, this.$options.data());
+        this.user_id = +val.params.user_id;
+      },
+      immediate: true,
+      deep: true
+    }
   }
 };
 
@@ -96,6 +139,12 @@ export default {
   height: 100vh;
 
   .header-bar {
+    .ivu-btn-primary {
+      color: #fff;
+      background-color: #f3394e;
+      border-color: #fff;
+    }
+
     @include frow(space-between);
     height: 50px;
     font-size: 16px;
