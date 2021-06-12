@@ -30,7 +30,7 @@
           <div class="bottom-box">
             <div class="price-box">
               <Rate
-                :count="10"
+                :count="5"
                 disabled
                 v-model="item.canteen_score.canteen_score_total" />
             </div>

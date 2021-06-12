@@ -12,23 +12,14 @@
     <div style="padding-top: 20px">
       <Form :model="formItem" :label-width="80">
 
-        <FormItem label="档口名称">
-          <Input v-model="canteenName" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
+        <FormItem label="主题">
+          <Input v-model="posttilt" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
                  placeholder="请输入档口名称"></Input>
         </FormItem>
-        <FormItem label="区域">
-          <Input v-model="canteenDistrict" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
+        <FormItem label="内容">
+          <Input v-model="postcontent" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
                  placeholder="请输入档口所在区域"></Input>
         </FormItem>
-        <FormItem label="楼层">
-          <Input v-model="canteenFloor" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
-                 placeholder="餐厅所在楼层"></Input>
-        </FormItem>
-        <FormItem label="详细描述">
-          <Input v-model="canteenIntro" type="textarea" :autosize="{minRows: 2,maxRows: 5} "
-                 placeholder="请输入详细信息"></Input>
-        </FormItem>
-
         <FormItem label="图片">
           <div>
             <Upload
@@ -72,15 +63,13 @@ export default {
     return {
       imgName: '',
       visible: false,
-      canteenName: '秘制小汉堡',
-      canteenDistrict: 'A',
-      canteenFloor: '1',
-      canteenIntro: '汉堡王',
+      posttilt: '创新港买草莓',
+      postcontent: '有一个草莓群：123456',
       pic_id:0,
 
       submitData: { // 这里是需要携带的数据
         srcLanguage: "en",
-        pic_zone:'3'
+        pic_zone:'6'
       },
 
     };
@@ -99,17 +88,16 @@ export default {
       }
 
       try {
+
         var self = this;
         var data = Qs.stringify({
           'user_id': self.userInfo.user_id,
-          'canteen_name': self.canteenName,
-          'canteen_district': self.canteenDistrict,
-          'canteen_floor': self.canteenFloor,
-          'canteen_intro': self.canteenIntro,
-          'pic_id':self.pic_id,
+          'post_title': self.posttilt,
+          'post_content': self.postcontent,
+          'pic_id': self.pic_id,
         });
 
-        this.$http.post('http://127.0.0.1:5000/canteen/insertCanteen', data, {
+        this.$http.post('http://127.0.0.1:5000/post/insertPost', data, {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }
         ).then((response) => {

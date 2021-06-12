@@ -14,14 +14,13 @@
         <div class="goods-box">
 
           <div class="img-box">
-            <img class="img" style="    width: 35px;height: 35px;border: 1px solid $bdeee;border-radius: 50%;" :src="data.post_pic" />
+            <img class="img" style="   " :src="data.post_pic" />
           </div>
 
           <div class="intr-box">
-            <span class="text">{{data.post_content+' '}}</span>
-            <span class="text">{{data.post_title+' '}}</span>
-            <span class="text">{{data.post_username+' '}}</span>
-            <h2 class="name">{{data.post_time}}</h2>
+            <span class="text" style="font-size: 30px">{{data.post_title+' '}}</span> <br/>
+            <span class="text" style="font-size: 20px">{{data.post_content+' '}}</span>
+            <h2 class="name"><span class="text">发起人：{{data.post_username+' '}}</span><br/>{{data.post_time}}</h2>
 
           </div>
           <div >
@@ -168,7 +167,7 @@ export default {
 
     to_score() {
       console.log(this.userInfo);
-      // this.$router.push({ name: 'plazascore', params: { plaza_id: this.plaza_id, user_id: this.userInfo.user_id } });
+       this.$router.push({ name: 'postscore', params: { post_id: this.post_id, user_id: this.userInfo.user_id } });
     },
 
     async handleFetchData() {
@@ -228,10 +227,10 @@ export default {
       flex: 1;
       padding-left: 15px;
       font-size: 12px;
-      color: $fs999;
+      color: $fs333;
       .name {
         font-size: 14px;
-        color: $fs333;
+        color: $fs999;
       }
       .other-box,
       .store-name,

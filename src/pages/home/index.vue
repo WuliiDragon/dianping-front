@@ -10,8 +10,8 @@
     <Tabs value="name1"   :animated="false">
       <TabPane label="固定发帖" name="name1"  >
         <div >
-          <div v-if="userInfo.permission">
-            <Button type="primary"  @click="to_add" long>添加餐厅档口</Button>
+          <div>
+            <Button v-if="userInfo.permission" type="primary"  @click="to_add" long>添加餐厅档口</Button>
           </div>
           <Scroll  :data="form.list"   height="1000px" style="padding-bottom: 100px">
             <Item :list="form.list" isHome></Item>
@@ -22,7 +22,7 @@
 
       <TabPane label="自主发帖" name="name2">
         <div >
-          <Button type="primary"  @click="to_addpost" long>发布帖子</Button>
+          <Button v-if="isLogin" type="primary"  @click="to_addpost" long>发布帖子</Button>
         </div>
 <!--        <div v-if="userInfo.permission">-->
 <!--          <Button type="primary"  @click="to_add" long>+</Button>-->
@@ -100,6 +100,9 @@ export default {
     },
     to_add() {
       this.$router.push({ name: 'add', params: { user_id: this.userInfo.id } });
+    },
+    to_addpost() {
+      this.$router.push({ name: 'addpost', params: { user_id: this.userInfo.id } });
     },
 
     async handleFetchPostData() {

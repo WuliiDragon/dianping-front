@@ -27,7 +27,7 @@
           <div class="bottom-box">
             <div class="price-box">
               <Rate
-                :count="10"
+                :count="5"
                 disabled
                 v-model="item.gym_score.gym_score_total" />
             </div>
