@@ -31,7 +31,6 @@
 
           </ListItem>
           <ListItem @click.native="$router.push({name: 'userrecord', params: {user_id: _user.user_id}})">我的发帖</ListItem>
-
           <ListItem @click.native="value3 = true">
             <div class="manager" v-if="this._user.permission=='1'">
 <!--              <Button class="btn-logout" @click="value3 = true" type="primary">发布公告</Button>-->

@@ -103,9 +103,10 @@ export default {
     async handleFetchBullet() {
       try {
         this.$http.get('http://127.0.0.1:5000/bulletin/getBulletinsList').then((response) => {
+          console.log('response',response);
           this.bull.title = response.bulletins_list[0].bulletin_title;
           this.bull.content = response.bulletins_list[0].bulletin_content;
-          console.log(this.bull);
+
         });
       } catch (e) {
       }

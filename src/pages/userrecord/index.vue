@@ -13,8 +13,9 @@
         <Scroll isBottom height="800px" :data="comments_list">
           <div>
             <ul class="comments-list">
-              <li class="item-box" v-for="(item, index) in comments_list" :key="index">
 
+              <li class="item-box" v-for="(item, index) in comments_list" :key="index">
+                <hr>
                 <div class="content-box" style="margin-left:20px">
 
                   <span style="margin-top: 5px;">
@@ -25,7 +26,9 @@
                   <p class="text" style="margin-top: 5px;">{{ item.comment_content }}</p>
 
                 </div>
+
               </li>
+
             </ul>
 
           </div>

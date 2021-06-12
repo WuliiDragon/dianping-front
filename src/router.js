@@ -132,6 +132,11 @@ const router = new Router({
       component: () => import('@/pages/scoregym')
     },
     {
+      path: '/userrecord/:user_id',
+      name: 'userrecord',
+      component: () => import('@/pages/userrecord')
+    },
+    {
       path: '*',
       redirect: '/home'
     },

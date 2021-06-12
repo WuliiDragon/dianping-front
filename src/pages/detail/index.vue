@@ -63,7 +63,7 @@
             </div>
             <div class="content-box">
               <div class="username">{{ item.comment_username }}</div>
-
+              <p class="username" >{{ item.comment_time }}</p>
 
               <div >
                 <div class="score-box">
@@ -73,38 +73,12 @@
                   <span class="text" >{{ ' 味道: ' + item.health_score }}</span>
                   <span class="text">{{ ' 服务: ' +item.service_score }}</span>
                 </div>
-<!--                  <Rate disabled show-text  size="small" allow-half="true" v-model="item.service_score" :count=10>-->
-<!--                  <span>服务</span>-->
-<!--                    <span style="color: #f5a623">{{ item.service_score }} 分</span>-->
-<!--&lt;!&ndash;                  </Rate>&ndash;&gt;-->
-<!--                <Row>-->
-<!--&lt;!&ndash;                  <Rate disabled show-text  allow-half="true" v-model="item.health_score" :count=10>&ndash;&gt;-->
-<!--                    <span style="color: #f5a623">{{ item.health_score }} 分</span>-->
-<!--&lt;!&ndash;                  </Rate>&ndash;&gt;-->
-<!--                </Row>-->
 
-<!--                <Row>-->
-<!--                  <Rate disabled show-text  allow-half="true" v-model="item.fullness_score" :count=10>-->
-<!--                    <span style="color: #f5a623">{{ item.fullness_score }} 分</span>-->
-<!--                  </Rate>-->
-<!--                </Row>-->
-
-<!--                <Row>-->
-<!--                  <Rate disabled show-text  allow-half="true" v-model="item.money_score" :count=10>-->
-<!--                    <span style="color: #f5a623">{{ item.money_score }} 分</span>-->
-<!--                  </Rate>-->
-<!--                </Row>-->
-
-<!--                  <Row>-->
-<!--                    <Rate disabled show-text  allow-half="true" v-model="item.taste_score" :count=10>-->
-<!--                      <span style="color: #f5a623">{{ item.taste_score }} 分</span>-->
-<!--                    </Rate>-->
-<!--                  </Row>-->
               </div>
 
 
 
-<!--              <p class="text">{{ item.comment_time }}</p>-->
+
 
               <p class="text">{{ item.comment_content }}</p>
               <div class="pic-bar" v-if="item.comment_pic.length">

@@ -19,25 +19,25 @@
         </FormItem>
 
         <FormItem label="味道">
-          <Rate v-model="score.score_taste" :count="10"/>
+          <Rate v-model="score.score_taste" :count="5"/>
         </FormItem>
 
         <FormItem label="满意度">
-          <Rate v-model="score.score_fullness" :count="10"/>
+          <Rate v-model="score.score_fullness" :count="5"/>
         </FormItem>
 
 
         <FormItem label="卫生">
-          <Rate v-model="score.score_health" :count="10"/>
+          <Rate v-model="score.score_health" :count="5"/>
         </FormItem>
 
 
         <FormItem label="价格">
-          <Rate v-model="score.score_money" :count="10"/>
+          <Rate v-model="score.score_money" :count="5"/>
         </FormItem>
 
         <FormItem label="服务">
-          <Rate v-model="score.score_service" :count="10"/>
+          <Rate v-model="score.score_service" :count="5"/>
         </FormItem>
         <FormItem label="图片">
 
