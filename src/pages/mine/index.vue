@@ -14,9 +14,9 @@
               <img class="avatar" :src="_user.user_pic" alt="头像"/>
             </div>
           </Upload>
-          <div v-if="file !== null">Upload file: {{ file.name }}
+          <div v-if="file !== null">上传文件: {{ file.name }}
             <Button class="btn-logout" type="text" @click="upload" :loading="loadingStatus">
-              {{ loadingStatus ? 'Uploading' : 'Click to upload' }}
+              {{ loadingStatus ? 'Uploading' : '点击上传' }}
             </Button>
           </div>
         </div>

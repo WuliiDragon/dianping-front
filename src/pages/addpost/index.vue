@@ -44,7 +44,7 @@
         </FormItem>
 
         <FormItem>
-          <Button type="primary" @click="insert">添加档口</Button>
+          <Button type="primary" @click="insert">发布</Button>
           <Button style="margin-left: 8px">重置</Button>
         </FormItem>
       </Form>

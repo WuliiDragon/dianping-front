@@ -26,7 +26,7 @@
         </div>
 
 
-        <Scroll isBottom  height="800px">
+        <Scroll isBottom  height="800px" style="margin-bottom: 20px">
           <post-item :list="post_data.posts_list" ></post-item>
         </Scroll>
 
@@ -95,6 +95,7 @@ export default {
       try {
         this.$http.get('http://127.0.0.1:5000/post/getPostsList').then((response) => {
           this.post_data = response
+          this.post_data = this.post_data.reverse()
           console.log('1111',this.post_data)
         });
       } catch (e) {

@@ -26,7 +26,7 @@
             <h2 class="name">{{ data.canteen_name }}</h2>
 
 
-            <span class="name">{{ data.canteen_intro  }}</span>
+<!--            <span class="name">{{ data.canteen_intro  }}</span>-->
             <span class="text">{{ data.canteen_district + '区' }}</span>
             <span class="text">{{ data.canteen_floor + '层' }}</span>
             <div class="score-box">
